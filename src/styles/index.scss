@@ -1,0 +1,47 @@
+@import './variables';
+@import './button';
+@import './home';
+@import './exercise';
+
+body {
+  height: 100%;
+  overflow: hidden;
+  background-color: $skin;
+  color: $velvet;
+  font-size: calc(12px + 0.8vw);
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: auto;
+  padding: 0 15px;
+  height: 30px;
+}
+
+.container {
+  align-items: center;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  height: 100%;
+  padding: 10% 0;
+}
+
+h1 {
+  margin-bottom: 4px;
+}
+
+select {
+  width: 20%;
+  height: 40px;
+  border-color: $velvet;
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+  outline: none;
+  padding: 0 9px;
+  font-size: calc(12px + 0.8vw);
+  color: $velvet;
+  background-color: $skin;
+  cursor: pointer;
+}

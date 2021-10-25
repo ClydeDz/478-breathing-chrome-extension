@@ -1,0 +1,16 @@
+@import './variables';
+
+button {
+    background-color: $velvet;
+    color: $skin;
+    padding: 9px 18px;
+    outline: none;
+    border: 0;
+    margin: 4px;
+    font-size: $font-size;
+
+    &:hover {
+        background-color: lighten($velvet, 10%);
+        cursor: pointer;
+    }
+}
