@@ -38,7 +38,9 @@ module.exports = {
 		new CopyWebpackPlugin({
 		patterns: [
 			{ from: "./src/breathing478.html" },
-			{ from: "./src/manifest.json" }
+			{ from: "./src/manifest.json" },
+			{ from: "icons/*", to: path.resolve(__dirname, "dist"), context: "src/" },
+			{ from: "fonts/*", to: path.resolve(__dirname, "dist"), context: "src/" }
 		]
 		}),
 	]

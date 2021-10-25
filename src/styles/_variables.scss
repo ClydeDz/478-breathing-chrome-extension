@@ -2,4 +2,17 @@ $skin: #f6e9c7;
 $velvet: #6c7697;
 $teal: #4c776d;
 
+@font-face {
+    font-family: AsapRegular;
+    src: url("fonts/Asap-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: AsapBold;
+    font-weight: bold;
+    src: url("fonts/Asap-Bold.otf") format("opentype");
+}
+
 $font-size: calc(12px + 0.8vw);
+$font-family-body: AsapRegular, sans-serif;
+$font-family-heading: AsapBold, serif;
