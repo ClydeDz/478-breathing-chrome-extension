@@ -38,6 +38,16 @@ h1 {
   font-size: $font-size-xlarge;
 }
 
+a {
+  color: $velvet;
+  text-decoration: none;
+  transition: text-decoration 0.8s ease-in;
+
+  &:hover, &:focus {
+    text-decoration: underline;
+  }
+}
+
 select {
   width: 20%;
   height: 40px;
