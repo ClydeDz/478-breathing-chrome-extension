@@ -41,10 +41,11 @@ h1 {
 a {
   color: $velvet;
   text-decoration: none;
-  transition: text-decoration 0.8s ease-in;
+  transition: all 0.3s ease-in;
 
   &:hover, &:focus {
     text-decoration: underline;
+    color: $teal;
   }
 }
 
