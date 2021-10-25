@@ -16,9 +16,11 @@ body {
 footer {
   position: fixed;
   bottom: 0;
-  width: auto;
-  padding: 0 15px;
+  width: 100%;
+  padding: 15px;
   height: 30px;
+  font-size: $font-size-small;
+  text-align: center;
 }
 
 .container {
@@ -33,6 +35,7 @@ footer {
 h1 {
   margin-bottom: 4px;
   font-family: $font-family-heading;
+  font-size: $font-size-xlarge;
 }
 
 select {
@@ -47,4 +50,9 @@ select {
   color: $velvet;
   background-color: $skin;
   cursor: pointer;
+}
+
+.close-icon::after {
+  display: inline-block;
+  content: "\00d7"; 
 }

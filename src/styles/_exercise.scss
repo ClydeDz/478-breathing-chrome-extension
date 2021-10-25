@@ -1,5 +1,15 @@
+@import './variables';
+
 #exercise {
     display: none;
+}
+
+#exerciseEnd {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    font-size: $font-size-xlarge;
+    cursor: pointer;
 }
 
 #exerciseTitle {
