@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "478",
+    "version": "1.0.0",
+    "author": "Clyde D'Souza",
+    "homepage_url": "https://github.com/clydedz",
+    "icons": {
+      "16": "icons/logo192.png",
+      "48": "icons/logo192.png",
+      "128": "icons/logo192.png"
+    },
+    "chrome_url_overrides" : {
+      "newtab": "breathing478.html"
+    }
+  }
+  
