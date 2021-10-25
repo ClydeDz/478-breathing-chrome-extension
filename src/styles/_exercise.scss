@@ -1,4 +1,16 @@
 #exercise {
     display: none;
 }
-  
+
+#exerciseTitle {
+    font-size: medium;
+}
+
+#exerciseAction {
+    text-transform: uppercase;
+    word-spacing: 1.5px;
+}
+
+#exerciseCountdown {
+    transition: all 0.5s ease;
+}

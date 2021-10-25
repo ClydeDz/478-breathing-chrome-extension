@@ -8,9 +8,11 @@ button {
     border: 0;
     margin: 4px;
     font-size: $font-size;
+    transition: background-color 0.8s;
 
     &:hover {
-        background-color: lighten($velvet, 10%);
+        // background-color: lighten($velvet, 10%);
+        background-color: $teal;        
         cursor: pointer;
     }
 }
