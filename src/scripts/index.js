@@ -91,4 +91,6 @@ jQuery(function() {
     jQuery("#exerciseEnd").on("click", function() {        
         switchToHomeMode();
     });
+
+    switchToExerciseMode();
 });
