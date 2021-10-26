@@ -22,18 +22,20 @@ function exerciseInhale() {
     jQuery("#exerciseAction").text(`INHALE`);
     jQuery("#exerciseCountdown").text(`${exerciseSteps["inhale"]}`);
     exerciseSteps["inhale"]--;
+    jQuery("#exerciseCountdown").removeClass("showTopText");
 }
 
 function exerciseHold(){
     jQuery("#exerciseAction").text(`HOLD`);
     jQuery("#exerciseCountdown").text(`${exerciseSteps["hold"]}`);
     exerciseSteps["hold"]--;
+    jQuery("#exerciseCountdown").removeClass("showTopText");
 }
 
 function exerciseExhale(){
     jQuery("#exerciseAction").text(`EXHALE`);
     jQuery("#exerciseCountdown").text(`${exerciseSteps["exhale"]}`);
-    exerciseSteps["exhale"]--;    
+    exerciseSteps["exhale"]--;
 }
 
 function startExercise() {
@@ -49,7 +51,7 @@ function startExercise() {
 
         if(exerciseDuration <=8 && exerciseDuration >= 1) {
             exerciseExhale();
-        }
+        }        
 
         if(exerciseDuration == 0) {
             resetExercise();
@@ -60,37 +62,51 @@ function startExercise() {
                 startExercise();
             }
 
+            switchToExerciseCompleteMode()
             return;
         }
 
         --exerciseDuration;  
-    }, 1000);
+    }, 900);
 }
 
-function switchToExerciseMode() {
+
+function resetExerciseInProgressText() {
+    jQuery("#exerciseTitle, #exerciseAction, #exerciseCountdown").text("");
+}
+
+function switchToExerciseCompleteMode() {
+    jQuery("#home").hide();
+    jQuery("#exerciseInProgress").hide();
+    jQuery("#exerciseComplete").show();
+    resetExerciseInProgressText();
+}
+
+function switchToExerciseInProgressMode() {
     rounds = jQuery("#roundsSelection").val();
     jQuery("#home").hide();
-    jQuery("#exercise").show();
+    jQuery("#exerciseComplete").hide();
+    jQuery("#exerciseInProgress").show();
     jQuery("#exerciseTitle").text(`Round ${currentRound} of ${rounds}`);
 }
 
 function switchToHomeMode() {
     currentRound = 1;
     jQuery("#home").show();
-    jQuery("#exercise").hide();
+    jQuery("#exerciseInProgress").hide();
+    jQuery("#exerciseComplete").hide();
     clearInterval(intervalTimer);
     resetExercise();
+    resetExerciseInProgressText();
 }
 
 jQuery(function() {
     jQuery("#start").on("click", function() {        
-        switchToExerciseMode();
+        switchToExerciseInProgressMode();
         startExercise();
     });
 
-    jQuery("#exerciseEnd").on("click", function() {        
+    jQuery("#exerciseEnd, #exerciseCompleteToHome").on("click", function() {        
         switchToHomeMode();
     });
-
-    switchToExerciseMode();
 });
