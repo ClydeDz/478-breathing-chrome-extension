@@ -36,10 +36,11 @@ export function performExerciseStep(exerciseDuration){
     if(exerciseDuration == 0) {
         settingsModule.resetExercise();
         settingsModule.clearExerciseInterval(settingsModule.intervalTimer);
-        settingsModule.settings.currentRound++;
+        ++settingsModule.settings.currentRound;
 
         if(settingsModule.settings.currentRound <= settingsModule.settings.rounds) {
             startExercise();
+            return;
         }
 
         actionsModule.switchToExerciseCompleteMode()
