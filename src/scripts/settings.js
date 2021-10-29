@@ -1,4 +1,4 @@
-export var intervalTimer;
+export var intervalTimer = 0;
 
 export var settings = {
     inhale: 4,
