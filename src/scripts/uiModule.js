@@ -1,4 +1,8 @@
-import jQuery from "jquery";
+var jQuery;
+
+export const initializeJQuery = (jQueryInstance) => {
+    jQuery = jQueryInstance;
+}
 
 export const updateAction = (value) => {
     jQuery("#exerciseAction").text(value);

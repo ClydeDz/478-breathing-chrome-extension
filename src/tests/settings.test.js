@@ -45,9 +45,8 @@ describe("settings → clearExerciseInterval()", () => {
     
     test("clears interval timer from another value", () => {
         settingsModule.intervalTimer = setInterval(jest.fn(), 1000);
-        settingsModule.clearExerciseInterval();        
+        settingsModule.clearExerciseInterval();      
 
-        console.log(settingsModule.intervalTimer);
         // TODO: Explore why this value is 0
         expect(clearInterval).toHaveBeenCalledWith(0);
     });
