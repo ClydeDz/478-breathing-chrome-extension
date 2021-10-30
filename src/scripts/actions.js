@@ -6,6 +6,7 @@ export function switchToExerciseCompleteMode() {
     uiModule.toggleHomeVisibility(false);
     uiModule.toggleExerciseInProgressVisibility(false);
     uiModule.toggleExerciseCompleteVisibility(true);
+    uiModule.resetRoundDropdownValue();
     
     uiModule.updateAction("");
     uiModule.updateTitle("");

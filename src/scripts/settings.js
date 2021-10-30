@@ -7,7 +7,7 @@ export var settings = {
     rounds: 1,
     currentRound: 1,    
     exerciseDuration: 19,
-    interval: 900
+    interval: 1000
 };
 
 export function resetExercise() {

@@ -5,7 +5,8 @@ import {
     text,
     hide,
     show,
-    on
+    on,
+    val
  } from "./mocks/jqueryMock";
 
 const switchToExerciseInProgressModeSpy = jest.spyOn(actionModule, "switchToExerciseInProgressMode")
@@ -105,6 +106,19 @@ describe("ui → getRoundDropdownValue()", () => {
         const value = uiModule.getRoundDropdownValue();
         expect(jQuery).toHaveBeenCalledWith("#roundsSelection");
         expect(value).toBe(3);
+    });
+});
+
+describe("ui → resetRoundDropdownValue()", () => {    
+    beforeEach(() => {
+        jest.clearAllMocks();
+        uiModule.initializeJQuery(jQuery);
+    });
+
+    test("resets the value of a dropdown element", () => {
+        uiModule.resetRoundDropdownValue();
+        expect(jQuery).toHaveBeenCalledWith("#roundsSelection");
+        expect(val).toHaveBeenCalledWith("1");
     });
 });
 

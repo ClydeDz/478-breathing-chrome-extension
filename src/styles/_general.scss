@@ -1,0 +1,67 @@
+@import './variables';
+
+body {
+    height: 100%;
+    overflow: hidden;
+    background-color: $skin;
+    color: $velvet;
+    font-size: calc(12px + 0.8vw);
+    font-family: $font-family-body;
+}
+  
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    height: 30px;
+    font-size: $font-size-small;
+    text-align: center;
+}
+
+.container {
+    align-items: center;
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    height: 100%;
+    padding: 10% 0;
+}
+  
+h1 {
+    margin-top: 18px;
+    margin-bottom: 4px;
+    font-family: $font-family-heading;
+    font-size: $font-size-xlarge;
+  }
+  
+a {
+    color: $velvet;
+    text-decoration: none;
+    transition: all 0.3s ease-in;
+
+    &:hover, &:focus {
+        text-decoration: underline;
+        color: $teal;
+    }
+}
+  
+select {
+    width: 20%;
+    height: 40px;
+    border-color: $velvet;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    outline: none;
+    padding: 0 9px;
+    font-size: calc(12px + 0.8vw);
+    color: $velvet;
+    background-color: $skin;
+    cursor: pointer;
+}
+  
+.close-icon::after {
+    display: inline-block;
+    content: "\00d7"; 
+}
+  

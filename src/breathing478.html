@@ -10,10 +10,11 @@
     </head>
     <body>
         <div class="container">
-            <div id="home">
+            <div id="home" class="fadeIn">
                 <img src="./icons/plectrum.png" alt="home" width="100" />
                 <h1>4-7-8 breathing</h1>
-                <p>An exercise ready in every new tab. Relives stress, reduces anxiety and calms the nerves.</p>
+                <p>Inhale for <b>4</b> seconds, hold for <b>7</b> seconds and exhale for <b>8</b> seconds. <br />
+                    Relives stress, reduces anxiety and calms the nerves.</p>
                 <select id="roundsSelection">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -26,16 +27,16 @@
             </div>
             <div id="exerciseInProgress">
                 <span id="exerciseEnd" class="close-icon"></span>
-                <p id="exerciseTitle"></p>
+                <p id="exerciseTitle" class="fadeIn"></p>
                 <p id="exerciseAction"></p>
-                <p id="exerciseCountdown" class="fadeInUp infinite"></p>
+                <p id="exerciseCountdown" class="fadeInUp infiniteAnimation"></p>
             </div>
             <div id="exerciseComplete" class="fadeInUp">
                 <p>Exercise complete!</p>
                 <button id="exerciseCompleteToHome" class="swing">Back to home</button>
             </div>
         </div>        
-        <footer>
+        <footer class="fadeIn">
             <a href="https://github.com/ClydeDz/478-breathing-chrome-extension/blob/main/docs/README.md" target="_blank" rel="noreferrer">
                 About</a>&nbsp;●&nbsp;
             <a href="https://github.com/ClydeDz/478-breathing-chrome-extension/issues/new/choose" target="_blank" rel="noreferrer">

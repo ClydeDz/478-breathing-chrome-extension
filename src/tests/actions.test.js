@@ -9,6 +9,8 @@ const updateCountdownSpy = jest.spyOn(uiModule, "updateCountdown")
     .mockImplementation(jest.fn());
 const updateTitleSpy = jest.spyOn(uiModule, "updateTitle")
     .mockImplementation(jest.fn());
+const resetRoundDropdownValueSpy = jest.spyOn(uiModule, "resetRoundDropdownValue")
+    .mockImplementation(jest.fn());
 const toggleHomeVisibilitySpy = jest.spyOn(uiModule, "toggleHomeVisibility")
     .mockImplementation(jest.fn());
 const toggleExerciseInProgressVisibilitySpy = jest.spyOn(uiModule, "toggleExerciseInProgressVisibility")
@@ -37,6 +39,7 @@ describe('actions → switchToExerciseCompleteMode()', () => {
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    
         expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);    
         expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(true);    
+        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();
 
         expect(updateActionSpy).toHaveBeenCalledWith("");    
         expect(updateCountdownSpy).toHaveBeenCalledWith("");    

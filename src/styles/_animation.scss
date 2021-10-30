@@ -1,36 +1,5 @@
-@-webkit-keyframes swing
-{
-    15%
-    {
-        -webkit-transform: translateX(5px);
-        transform: translateX(5px);
-    }
-    30%
-    {
-        -webkit-transform: translateX(-5px);
-       transform: translateX(-5px);
-    } 
-    50%
-    {
-        -webkit-transform: translateX(3px);
-        transform: translateX(3px);
-    }
-    65%
-    {
-        -webkit-transform: translateX(-3px);
-        transform: translateX(-3px);
-    }
-    80%
-    {
-        -webkit-transform: translateX(2px);
-        transform: translateX(2px);
-    }
-    100%
-    {
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-    }
-}
+@import "./variables";
+
 @keyframes swing
 {
     15%
@@ -77,23 +46,30 @@
     }
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 .swing:hover
 {
-    animation: swing 1s ease;
-    animation-iteration-count: 1;
-    -webkit-animation: swing 1s ease;
-    -webkit-animation-iteration-count: 1;    
+    animation: swing $animation-duration ease; 
+}
+
+.fadeIn {
+    animation: fadeIn $animation-duration-slow ease;
 }
 
 .fadeInUp {
-    animation-name: fadeInUp;
-    animation-duration: 1s;
-    animation-fill-mode: both;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-fill-mode: both;   
+    animation: fadeInUp $animation-duration ease;
 }
 
-.infinite{
+.infiniteAnimation {
     animation-iteration-count: infinite;
 }
 

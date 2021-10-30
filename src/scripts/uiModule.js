@@ -39,6 +39,10 @@ export const getRoundDropdownValue = () => {
     return jQuery("#roundsSelection").val();
 }
 
+export const resetRoundDropdownValue = () => {
+    jQuery("#roundsSelection").val("1");
+}
+
 function toggleElementVisibility(element, showComponent) {
     showComponent ? element.show(): element.hide();
 }
