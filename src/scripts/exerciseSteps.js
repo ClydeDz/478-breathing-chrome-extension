@@ -2,19 +2,19 @@ import * as uiModule from "../scripts/uiModule";
 import * as settingsModule from "../scripts/settings";
 import * as actionsModule from "../scripts/actions";
 
-export function exerciseInhale() {
+function exerciseInhale() {
     uiModule.updateAction("Inhale");
     uiModule.updateCountdown(`${settingsModule.settings.inhale}`);
     settingsModule.settings.inhale--;
 }
 
-export function exerciseHold(){
+function exerciseHold(){
     uiModule.updateAction("Hold");
     uiModule.updateCountdown(`${settingsModule.settings.hold}`);
     settingsModule.settings.hold--;
 }
 
-export function exerciseExhale(){
+function exerciseExhale(){
     uiModule.updateAction("Exhale");
     uiModule.updateCountdown(`${settingsModule.settings.exhale}`);
     settingsModule.settings.exhale--;
@@ -39,20 +39,11 @@ export function performExerciseStep(exerciseDuration){
         ++settingsModule.settings.currentRound;
 
         if(settingsModule.settings.currentRound <= settingsModule.settings.rounds) {
-            startExercise();
+            actionsModule.startExercise();
             return;
         }
 
         actionsModule.switchToExerciseCompleteMode()
         return;
     }
-}
-
-export function startExercise() {
-    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
-
-    settingsModule.intervalTimer = setInterval(function() {
-        performExerciseStep(settingsModule.settings.exerciseDuration);
-        --settingsModule.settings.exerciseDuration;  
-    }, settingsModule.settings.interval);
 }

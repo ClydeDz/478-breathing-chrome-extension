@@ -1,5 +1,6 @@
 import * as uiModule from "../scripts/uiModule";
 import * as settingsModule from "../scripts/settings";
+import * as exerciseStepsModule from "../scripts/exerciseSteps";
 
 export function switchToExerciseCompleteMode() {
     uiModule.toggleHomeVisibility(false);
@@ -31,4 +32,13 @@ export function switchToHomeMode() {
     uiModule.updateAction("");
     uiModule.updateTitle("");
     uiModule.updateCountdown("");
+}
+
+export function startExercise() {
+    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
+
+    settingsModule.intervalTimer = setInterval(function() {
+        exerciseStepsModule.performExerciseStep(settingsModule.settings.exerciseDuration);
+        --settingsModule.settings.exerciseDuration;  
+    }, settingsModule.settings.interval);
 }
