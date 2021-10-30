@@ -1,6 +1,7 @@
 import * as uiModule from "../scripts/uiModule";
 import * as actionsModule from "../scripts/actions";
 import * as settingsModule from "../scripts/settings";
+import * as exerciseStepsModule from "../scripts/exerciseSteps";
 
 const updateActionSpy = jest.spyOn(uiModule, "updateAction")
     .mockImplementation(jest.fn());
@@ -20,6 +21,9 @@ const getRoundDropdownValueSpy = jest.spyOn(uiModule, "getRoundDropdownValue")
 const clearExerciseIntervalSpy = jest.spyOn(settingsModule, "clearExerciseInterval")
     .mockImplementation(jest.fn());
 const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
+    .mockImplementation(jest.fn());
+
+const performExerciseStepSpy = jest.spyOn(exerciseStepsModule, "performExerciseStep")
     .mockImplementation(jest.fn());
 
 describe('actions → switchToExerciseCompleteMode()', () => {    
@@ -62,7 +66,6 @@ describe('actions → switchToExerciseInProgressMode()', () => {
     });
 });
 
-
 describe('actions → switchToHomeMode()', () => {    
     beforeEach(() => {
         jest.clearAllMocks();
@@ -84,3 +87,38 @@ describe('actions → switchToHomeMode()', () => {
         expect(updateTitleSpy).toHaveBeenCalledWith("");  
     });
 });
+
+describe('actions → startExercise()', () => {    
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test('updates required ui elements', () => {
+        settingsModule.settings.rounds = 5;        
+        const interval = settingsModule.settings.interval;
+        jest.useFakeTimers();
+        jest.spyOn(global, "setInterval");
+
+        actionsModule.startExercise();
+        
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round 1 of 5`);  
+        expect(setInterval).toHaveBeenCalledWith(actionsModule.startExerciseIntervalFunction, interval);
+    });
+});
+
+
+describe('actions → startExerciseIntervalFunction()', () => {    
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test('updates required ui elements', () => {
+        const duration = settingsModule.settings.exerciseDuration;
+
+        actionsModule.startExerciseIntervalFunction();
+
+        expect(performExerciseStepSpy).toHaveBeenCalledWith(duration);  
+        expect(settingsModule.settings.exerciseDuration).toBe(duration - 1);
+    });
+});
+

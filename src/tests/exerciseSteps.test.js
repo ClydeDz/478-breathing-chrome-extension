@@ -5,23 +5,18 @@ import * as actionModule from "../scripts/actions";
 
 const updateActionSpy = jest.spyOn(uiModule, "updateAction")
     .mockImplementation(jest.fn());
-
 const updateCountdownSpy = jest.spyOn(uiModule, "updateCountdown")
     .mockImplementation(jest.fn());
 
 const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
     .mockImplementation(jest.fn());
-
 const clearExerciseIntervalSpy = jest.spyOn(settingsModule, "clearExerciseInterval")
     .mockImplementation(jest.fn());
 
 const switchToExerciseCompleteModeSpy = jest.spyOn(actionModule, "switchToExerciseCompleteMode")
     .mockImplementation(jest.fn());
-
 const startExerciseSpy = jest.spyOn(actionModule, "startExercise")
     .mockImplementation(jest.fn());
-
-// TODO: Add other repetitive tests
 
 describe('exerciseSteps → performExerciseStep()', () => {
     
@@ -29,16 +24,56 @@ describe('exerciseSteps → performExerciseStep()', () => {
         jest.clearAllMocks();
     });
 
-    test('triggers the required updates when its time to inhale', () => {
+    test.each([
+        19,
+        18,
+        17,
+        16
+    ])('triggers the required updates when its time to inhale using %d', (i) => {
         const inhale = settingsModule.settings.inhale;    
-        exerciseStepsModule.performExerciseStep(18);    
+        exerciseStepsModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.inhale).toBe(inhale - 1);
         expect(updateActionSpy).toHaveBeenCalledWith("Inhale");    
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${inhale}`);    
     });
 
-    test('triggers the...', () => {
+    test.each([
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9
+    ])('triggers the required updates when its time to hold using %d', (i) => {
+        const hold = settingsModule.settings.hold;    
+        exerciseStepsModule.performExerciseStep(i);    
+
+        expect(settingsModule.settings.hold).toBe(hold - 1);
+        expect(updateActionSpy).toHaveBeenCalledWith("Hold");    
+        expect(updateCountdownSpy).toHaveBeenCalledWith(`${hold}`);    
+    });
+
+    test.each([
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+    ])('triggers the required updates when its time to exhale using %d', (i) => {
+        const exhale = settingsModule.settings.exhale;    
+        exerciseStepsModule.performExerciseStep(i);    
+
+        expect(settingsModule.settings.exhale).toBe(exhale - 1);
+        expect(updateActionSpy).toHaveBeenCalledWith("Exhale");    
+        expect(updateCountdownSpy).toHaveBeenCalledWith(`${exhale}`);    
+    });
+    
+    test('triggers the required updates when times up and no more rounds to go', () => {
         settingsModule.settings.rounds = 1;    
         const currentRound = settingsModule.settings.currentRound;    
         exerciseStepsModule.performExerciseStep(0);    
@@ -49,7 +84,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         expect(switchToExerciseCompleteModeSpy).toHaveBeenCalled();
     });
 
-    test('triggers the excp...', () => {
+    test('triggers the required updates when times up but more rounds to go', () => {
         settingsModule.settings.rounds = 5;    
         const currentRound = settingsModule.settings.currentRound;    
         exerciseStepsModule.performExerciseStep(0);    

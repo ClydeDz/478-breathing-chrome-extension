@@ -4,7 +4,7 @@ export var settings = {
     inhale: 4,
     hold: 7,
     exhale: 8,    
-    rounds: 0,
+    rounds: 1,
     currentRound: 1,    
     exerciseDuration: 19,
     interval: 900

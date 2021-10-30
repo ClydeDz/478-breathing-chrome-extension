@@ -34,11 +34,16 @@ export function switchToHomeMode() {
     uiModule.updateCountdown("");
 }
 
+export function startExerciseIntervalFunction() {
+    exerciseStepsModule.performExerciseStep(settingsModule.settings.exerciseDuration);
+    --settingsModule.settings.exerciseDuration; 
+}
+
 export function startExercise() {
     uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
 
-    settingsModule.intervalTimer = setInterval(function() {
-        exerciseStepsModule.performExerciseStep(settingsModule.settings.exerciseDuration);
-        --settingsModule.settings.exerciseDuration;  
-    }, settingsModule.settings.interval);
+    settingsModule.intervalTimer = setInterval(
+        startExerciseIntervalFunction, 
+        settingsModule.settings.interval
+        );
 }
