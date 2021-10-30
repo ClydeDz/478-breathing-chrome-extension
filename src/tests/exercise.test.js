@@ -18,7 +18,7 @@ const switchToExerciseCompleteModeSpy = jest.spyOn(actionModule, "switchToExerci
 const startExerciseSpy = jest.spyOn(actionModule, "startExercise")
     .mockImplementation(jest.fn());
 
-describe('exerciseSteps → performExerciseStep()', () => {
+describe("exerciseSteps → performExerciseStep()", () => {
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -29,7 +29,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         18,
         17,
         16
-    ])('triggers the required updates when its time to inhale using %d', (i) => {
+    ])("triggers the required updates when its time to inhale using %d", (i) => {
         const inhale = settingsModule.settings.inhale;    
         exerciseModule.performExerciseStep(i);    
 
@@ -46,7 +46,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         11,
         10,
         9
-    ])('triggers the required updates when its time to hold using %d', (i) => {
+    ])("triggers the required updates when its time to hold using %d", (i) => {
         const hold = settingsModule.settings.hold;    
         exerciseModule.performExerciseStep(i);    
 
@@ -64,7 +64,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         3,
         2,
         1
-    ])('triggers the required updates when its time to exhale using %d', (i) => {
+    ])("triggers the required updates when its time to exhale using %d", (i) => {
         const exhale = settingsModule.settings.exhale;    
         exerciseModule.performExerciseStep(i);    
 
@@ -73,7 +73,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${exhale}`);    
     });
     
-    test('triggers the required updates when times up and no more rounds to go', () => {
+    test("triggers the required updates when times up and no more rounds to go", () => {
         settingsModule.settings.rounds = 1;    
         const currentRound = settingsModule.settings.currentRound;    
         exerciseModule.performExerciseStep(0);    
@@ -84,7 +84,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         expect(switchToExerciseCompleteModeSpy).toHaveBeenCalled();
     });
 
-    test('triggers the required updates when times up but more rounds to go', () => {
+    test("triggers the required updates when times up but more rounds to go", () => {
         settingsModule.settings.rounds = 5;    
         const currentRound = settingsModule.settings.currentRound;    
         exerciseModule.performExerciseStep(0);    

@@ -28,12 +28,12 @@ const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
 const performExerciseStepSpy = jest.spyOn(exerciseModule, "performExerciseStep")
     .mockImplementation(jest.fn());
 
-describe('actions → switchToExerciseCompleteMode()', () => {    
+describe("actions → switchToExerciseCompleteMode()", () => {    
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('updates required ui elements', () => {
+    test("updates required ui elements", () => {
         actionsModule.switchToExerciseCompleteMode();
         
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    
@@ -47,12 +47,12 @@ describe('actions → switchToExerciseCompleteMode()', () => {
     });
 });
 
-describe('actions → switchToExerciseInProgressMode()', () => {    
+describe("actions → switchToExerciseInProgressMode()", () => {    
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('updates required ui elements', () => {
+    test("updates required ui elements", () => {
         getRoundDropdownValueSpy.mockReturnValue(5);
 
         actionsModule.switchToExerciseInProgressMode();
@@ -69,12 +69,12 @@ describe('actions → switchToExerciseInProgressMode()', () => {
     });
 });
 
-describe('actions → switchToHomeMode()', () => {    
+describe("actions → switchToHomeMode()", () => {    
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('updates required ui elements', () => {
+    test("updates required ui elements", () => {
         actionsModule.switchToHomeMode();
         
         expect(settingsModule.settings.currentRound).toBe(1);
@@ -91,12 +91,12 @@ describe('actions → switchToHomeMode()', () => {
     });
 });
 
-describe('actions → startExercise()', () => {    
+describe("actions → startExercise()", () => {    
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('updates required ui elements', () => {
+    test("updates required ui elements", () => {
         settingsModule.settings.rounds = 5;        
         const interval = settingsModule.settings.interval;
         jest.useFakeTimers();
@@ -110,12 +110,12 @@ describe('actions → startExercise()', () => {
 });
 
 
-describe('actions → startExerciseIntervalFunction()', () => {    
+describe("actions → startExerciseIntervalFunction()", () => {    
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('updates required ui elements', () => {
+    test("updates required ui elements", () => {
         const duration = settingsModule.settings.exerciseDuration;
 
         actionsModule.startExerciseIntervalFunction();

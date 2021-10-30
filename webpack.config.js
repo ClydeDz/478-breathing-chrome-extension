@@ -1,11 +1,11 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: ['./src/scripts/index.js', './src/styles/index.scss'],
+  entry: ["./src/scripts/index.js", "./src/styles/index.scss"],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
   module: {
 		rules: [
@@ -13,22 +13,22 @@ module.exports = {
 				test: /\.scss$/,
 				use: [
 					{
-						loader: 'file-loader',
+						loader: "file-loader",
 						options: {
-							name: '[name].css',
+							name: "[name].css",
 						}
 					},
 					{
-						loader: 'extract-loader'
+						loader: "extract-loader"
 					},
 					{
-						loader: 'css-loader?-url'
+						loader: "css-loader?-url"
 					},
 					{
-						loader: 'postcss-loader'
+						loader: "postcss-loader"
 					},
 					{
-						loader: 'sass-loader'
+						loader: "sass-loader"
 					}
 				]
 			},
@@ -36,10 +36,10 @@ module.exports = {
 				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
 				use: {
-						loader: 'babel-loader',
+						loader: "babel-loader",
 						options: {
-						presets: ['@babel/preset-env'],
-						plugins: ['@babel/plugin-transform-runtime']
+						presets: ["@babel/preset-env"],
+						plugins: ["@babel/plugin-transform-runtime"]
 					}
 				}
 			}
