@@ -1,7 +1,7 @@
-import * as uiModule from "../scripts/uiModule";
+import * as uiModule from "../scripts/ui";
 import * as actionsModule from "../scripts/actions";
 import * as settingsModule from "../scripts/settings";
-import * as exerciseStepsModule from "../scripts/exerciseSteps";
+import * as exerciseModule from "../scripts/exercise";
 
 const updateActionSpy = jest.spyOn(uiModule, "updateAction")
     .mockImplementation(jest.fn());
@@ -25,7 +25,7 @@ const clearExerciseIntervalSpy = jest.spyOn(settingsModule, "clearExerciseInterv
 const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
     .mockImplementation(jest.fn());
 
-const performExerciseStepSpy = jest.spyOn(exerciseStepsModule, "performExerciseStep")
+const performExerciseStepSpy = jest.spyOn(exerciseModule, "performExerciseStep")
     .mockImplementation(jest.fn());
 
 describe('actions → switchToExerciseCompleteMode()', () => {    

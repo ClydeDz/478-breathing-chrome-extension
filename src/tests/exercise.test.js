@@ -1,5 +1,5 @@
-import * as uiModule from "../scripts/uiModule";
-import * as exerciseStepsModule from "../scripts/exerciseSteps";
+import * as uiModule from "../scripts/ui";
+import * as exerciseModule from "../scripts/exercise";
 import * as settingsModule from "../scripts/settings";
 import * as actionModule from "../scripts/actions";
 
@@ -31,7 +31,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         16
     ])('triggers the required updates when its time to inhale using %d', (i) => {
         const inhale = settingsModule.settings.inhale;    
-        exerciseStepsModule.performExerciseStep(i);    
+        exerciseModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.inhale).toBe(inhale - 1);
         expect(updateActionSpy).toHaveBeenCalledWith("Inhale");    
@@ -48,7 +48,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         9
     ])('triggers the required updates when its time to hold using %d', (i) => {
         const hold = settingsModule.settings.hold;    
-        exerciseStepsModule.performExerciseStep(i);    
+        exerciseModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.hold).toBe(hold - 1);
         expect(updateActionSpy).toHaveBeenCalledWith("Hold");    
@@ -66,7 +66,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
         1
     ])('triggers the required updates when its time to exhale using %d', (i) => {
         const exhale = settingsModule.settings.exhale;    
-        exerciseStepsModule.performExerciseStep(i);    
+        exerciseModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.exhale).toBe(exhale - 1);
         expect(updateActionSpy).toHaveBeenCalledWith("Exhale");    
@@ -76,7 +76,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
     test('triggers the required updates when times up and no more rounds to go', () => {
         settingsModule.settings.rounds = 1;    
         const currentRound = settingsModule.settings.currentRound;    
-        exerciseStepsModule.performExerciseStep(0);    
+        exerciseModule.performExerciseStep(0);    
         
         expect(resetExerciseSpy).toHaveBeenCalled();
         expect(clearExerciseIntervalSpy).toHaveBeenCalled();
@@ -87,7 +87,7 @@ describe('exerciseSteps → performExerciseStep()', () => {
     test('triggers the required updates when times up but more rounds to go', () => {
         settingsModule.settings.rounds = 5;    
         const currentRound = settingsModule.settings.currentRound;    
-        exerciseStepsModule.performExerciseStep(0);    
+        exerciseModule.performExerciseStep(0);    
         
         expect(resetExerciseSpy).toHaveBeenCalled();
         expect(clearExerciseIntervalSpy).toHaveBeenCalled();

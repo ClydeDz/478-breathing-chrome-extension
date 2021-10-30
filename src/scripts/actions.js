@@ -1,6 +1,6 @@
-import * as uiModule from "../scripts/uiModule";
+import * as uiModule from "./ui";
 import * as settingsModule from "../scripts/settings";
-import * as exerciseStepsModule from "../scripts/exerciseSteps";
+import * as exerciseModule from "./exercise";
 
 export function switchToExerciseCompleteMode() {
     uiModule.toggleHomeVisibility(false);
@@ -36,7 +36,7 @@ export function switchToHomeMode() {
 }
 
 export function startExerciseIntervalFunction() {
-    exerciseStepsModule.performExerciseStep(settingsModule.settings.exerciseDuration);
+    exerciseModule.performExerciseStep(settingsModule.settings.exerciseDuration);
     --settingsModule.settings.exerciseDuration; 
 }
 

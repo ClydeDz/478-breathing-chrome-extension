@@ -1,6 +1,6 @@
-import * as uiModule from "../scripts/uiModule";
-import * as settingsModule from "../scripts/settings";
-import * as actionsModule from "../scripts/actions";
+import * as uiModule from "./ui";
+import * as settingsModule from "./settings";
+import * as actionsModule from "./actions";
 
 function exerciseInhale() {
     uiModule.updateAction("Inhale");

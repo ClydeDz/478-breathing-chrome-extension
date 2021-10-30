@@ -1,4 +1,4 @@
-import * as uiModule from "../scripts/uiModule";
+import * as uiModule from "../scripts/ui";
 import * as actionModule from "../scripts/actions";
 import { 
     jQuery, 
