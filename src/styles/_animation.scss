@@ -56,22 +56,35 @@
     }
 }
 
-.swing:hover
-{
-    animation: swing $animation-duration ease; 
+.animation {
+    &-swing {
+        &:hover {
+            animation-name: swing; 
+        }        
+    }
+    
+    &-fadeIn {
+        animation-name: fadeIn;
+    }
+    
+    &-fadeInUp {
+        animation-name: fadeInUp;
+    }
+    
+    &-duration {
+        animation-duration: $animation-duration;
+
+        &-slow {
+            animation-duration: $animation-duration-slow;
+        }
+    }
+    &-iteration {
+        &-infinite {
+            animation-iteration-count: infinite;
+        }
+    }
 }
 
-.fadeIn {
-    animation: fadeIn $animation-duration-slow ease;
-}
-
-.fadeInUp {
-    animation: fadeInUp $animation-duration ease;
-}
-
-.infiniteAnimation {
-    animation-iteration-count: infinite;
-}
 
 
 

@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="container">
-            <div id="home" class="fadeIn">
+            <div id="home" class="animation-fadeIn animation-duration-slow">
                 <img src="./icons/plectrum.png" alt="home" width="100" />
                 <h1>4-7-8 breathing</h1>
                 <p>Inhale for <b>4</b> seconds, hold for <b>7</b> seconds and exhale for <b>8</b> seconds. <br />
@@ -23,17 +23,17 @@
                 </select>
                 round(s)
                 <br/>
-                <button id="start" class="swing">Start</button>
+                <button id="start" class="animation-swing animation-duration">Start</button>
             </div>
             <div id="exerciseInProgress">
                 <span id="exerciseEnd" class="close-icon"></span>
-                <p id="exerciseTitle" class="fadeIn"></p>
+                <p id="exerciseTitle" class="animation-fadeIn"></p>
                 <p id="exerciseAction"></p>
-                <p id="exerciseCountdown" class="fadeInUp infiniteAnimation"></p>
+                <p id="exerciseCountdown" class="animation-fadeIn animation-duration animation-iteration-infinite"></p>
             </div>
-            <div id="exerciseComplete" class="fadeInUp">
+            <div id="exerciseComplete" class="animation-fadeInUp animation-duration-slow">
                 <p>Exercise complete!</p>
-                <button id="exerciseCompleteToHome" class="swing">Back to home</button>
+                <button id="exerciseCompleteToHome" class="animation-swing animation-duration">Back to home</button>
             </div>
         </div>        
         <footer class="fadeIn">
