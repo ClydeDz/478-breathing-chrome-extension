@@ -34,7 +34,8 @@ export function switchToHomeMode() {
     
     uiModule.toggleHomeVisibility(true);
     uiModule.toggleExerciseInProgressVisibility(false);
-    uiModule.toggleExerciseCompleteVisibility(false);   
+    uiModule.toggleExerciseCompleteVisibility(false);  
+    uiModule.resetRoundDropdownValue();
     
     uiModule.updateAction("");
     uiModule.updateTitle("");

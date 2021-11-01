@@ -84,6 +84,7 @@ describe("actions → switchToHomeMode()", () => {
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(true);    
         expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);
         expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(false);
+        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();
 
         expect(updateActionSpy).toHaveBeenCalledWith("");    
         expect(updateCountdownSpy).toHaveBeenCalledWith("");    
