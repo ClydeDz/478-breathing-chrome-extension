@@ -47,6 +47,22 @@ describe("actions → switchToExerciseCompleteMode()", () => {
     });
 });
 
+describe("actions → switchToRoundCompleteMode()", () => {    
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test("updates required ui elements", () => {
+        settingsModule.settings.currentRound = 1;
+
+        actionsModule.switchToRoundCompleteMode();
+
+        expect(updateActionSpy).toHaveBeenCalledWith(`Round 1`);    
+        expect(updateCountdownSpy).toHaveBeenCalledWith("");    
+        expect(updateTitleSpy).toHaveBeenCalledWith("");    
+    });
+});
+
 describe("actions → switchToExerciseInProgressMode()", () => {    
     beforeEach(() => {
         jest.clearAllMocks();
