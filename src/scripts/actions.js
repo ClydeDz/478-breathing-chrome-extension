@@ -2,6 +2,12 @@ import * as uiModule from "./ui";
 import * as settingsModule from "../scripts/settings";
 import * as exerciseModule from "./exercise";
 
+export function switchToRoundCompleteMode() {
+    uiModule.updateTitle("");
+    uiModule.updateAction(`Round ${settingsModule.settings.currentRound}`);
+    uiModule.updateCountdown("");
+}
+
 export function switchToExerciseCompleteMode() {
     uiModule.toggleHomeVisibility(false);
     uiModule.toggleExerciseInProgressVisibility(false);
@@ -36,13 +42,10 @@ export function switchToHomeMode() {
 }
 
 export function startExerciseIntervalFunction() {
-    exerciseModule.performExerciseStep(settingsModule.settings.exerciseDuration);
-    --settingsModule.settings.exerciseDuration; 
+    exerciseModule.performExerciseStep(settingsModule.settings.exerciseDuration);    
 }
 
 export function startExercise() {
-    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
-
     settingsModule.intervalTimer = setInterval(
         startExerciseIntervalFunction, 
         settingsModule.settings.interval

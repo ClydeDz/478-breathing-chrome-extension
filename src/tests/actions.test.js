@@ -102,9 +102,8 @@ describe("actions → startExercise()", () => {
         jest.useFakeTimers();
         jest.spyOn(global, "setInterval");
 
-        actionsModule.startExercise();
+        actionsModule.startExercise();        
         
-        expect(updateTitleSpy).toHaveBeenCalledWith(`Round 1 of 5`);  
         expect(setInterval).toHaveBeenCalledWith(actionsModule.startExerciseIntervalFunction, interval);
     });
 });
@@ -121,7 +120,6 @@ describe("actions → startExerciseIntervalFunction()", () => {
         actionsModule.startExerciseIntervalFunction();
 
         expect(performExerciseStepSpy).toHaveBeenCalledWith(duration);  
-        expect(settingsModule.settings.exerciseDuration).toBe(duration - 1);
     });
 });
 

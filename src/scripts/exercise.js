@@ -20,7 +20,8 @@ function exerciseExhale(){
     settingsModule.settings.exhale--;
 }
 
-export function performExerciseStep(exerciseDuration){
+export function performExerciseStep(exerciseDuration){    
+    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
     if(exerciseDuration <=19 && exerciseDuration >= 16) {
         exerciseInhale();
     }
@@ -34,16 +35,19 @@ export function performExerciseStep(exerciseDuration){
     }        
 
     if(exerciseDuration == 0) {
-        settingsModule.resetExercise();
+        ++settingsModule.settings.currentRound;        
         settingsModule.clearExerciseInterval(settingsModule.intervalTimer);
-        ++settingsModule.settings.currentRound;
+        settingsModule.resetExercise();
 
         if(settingsModule.settings.currentRound <= settingsModule.settings.rounds) {
+            actionsModule.switchToRoundCompleteMode();
             actionsModule.startExercise();
             return;
         }
-
+        
         actionsModule.switchToExerciseCompleteMode()
         return;
     }
+
+    --settingsModule.settings.exerciseDuration; 
 }

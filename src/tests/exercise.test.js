@@ -3,6 +3,8 @@ import * as exerciseModule from "../scripts/exercise";
 import * as settingsModule from "../scripts/settings";
 import * as actionModule from "../scripts/actions";
 
+const updateTitleSpy = jest.spyOn(uiModule, "updateTitle")
+    .mockImplementation(jest.fn());
 const updateActionSpy = jest.spyOn(uiModule, "updateAction")
     .mockImplementation(jest.fn());
 const updateCountdownSpy = jest.spyOn(uiModule, "updateCountdown")
@@ -17,6 +19,8 @@ const switchToExerciseCompleteModeSpy = jest.spyOn(actionModule, "switchToExerci
     .mockImplementation(jest.fn());
 const startExerciseSpy = jest.spyOn(actionModule, "startExercise")
     .mockImplementation(jest.fn());
+const switchToRoundCompleteModeSpy = jest.spyOn(actionModule, "switchToRoundCompleteMode")
+    .mockImplementation(jest.fn());
 
 describe("exerciseSteps → performExerciseStep()", () => {
     
@@ -30,10 +34,13 @@ describe("exerciseSteps → performExerciseStep()", () => {
         17,
         16
     ])("triggers the required updates when its time to inhale using %d", (i) => {
+        const currentRound = settingsModule.settings.currentRound;    
+        const rounds = settingsModule.settings.rounds;
         const inhale = settingsModule.settings.inhale;    
         exerciseModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.inhale).toBe(inhale - 1);
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${rounds}`);
         expect(updateActionSpy).toHaveBeenCalledWith("Inhale");    
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${inhale}`);    
     });
@@ -47,10 +54,13 @@ describe("exerciseSteps → performExerciseStep()", () => {
         10,
         9
     ])("triggers the required updates when its time to hold using %d", (i) => {
+        const currentRound = settingsModule.settings.currentRound;    
+        const rounds = settingsModule.settings.rounds;
         const hold = settingsModule.settings.hold;    
         exerciseModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.hold).toBe(hold - 1);
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${rounds}`);
         expect(updateActionSpy).toHaveBeenCalledWith("Hold");    
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${hold}`);    
     });
@@ -65,10 +75,13 @@ describe("exerciseSteps → performExerciseStep()", () => {
         2,
         1
     ])("triggers the required updates when its time to exhale using %d", (i) => {
+        const currentRound = settingsModule.settings.currentRound;    
+        const rounds = settingsModule.settings.rounds;    
         const exhale = settingsModule.settings.exhale;    
         exerciseModule.performExerciseStep(i);    
 
         expect(settingsModule.settings.exhale).toBe(exhale - 1);
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${rounds}`);
         expect(updateActionSpy).toHaveBeenCalledWith("Exhale");    
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${exhale}`);    
     });
@@ -78,6 +91,7 @@ describe("exerciseSteps → performExerciseStep()", () => {
         const currentRound = settingsModule.settings.currentRound;    
         exerciseModule.performExerciseStep(0);    
         
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${settingsModule.settings.rounds}`);
         expect(resetExerciseSpy).toHaveBeenCalled();
         expect(clearExerciseIntervalSpy).toHaveBeenCalled();
         expect(settingsModule.settings.currentRound).toBe(currentRound + 1);
@@ -89,11 +103,13 @@ describe("exerciseSteps → performExerciseStep()", () => {
         const currentRound = settingsModule.settings.currentRound;    
         exerciseModule.performExerciseStep(0);    
         
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${settingsModule.settings.rounds}`);
         expect(resetExerciseSpy).toHaveBeenCalled();
         expect(clearExerciseIntervalSpy).toHaveBeenCalled();
         expect(settingsModule.settings.currentRound).toBe(currentRound + 1);
 
         expect(startExerciseSpy).toHaveBeenCalled();
+        expect(switchToRoundCompleteModeSpy).toHaveBeenCalled();        
 
         expect(switchToExerciseCompleteModeSpy).not.toHaveBeenCalled();
     });
