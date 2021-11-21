@@ -70,9 +70,8 @@ describe("actions → switchToExerciseInProgressMode()", () => {
 
     test("updates required ui elements", () => {
         getRoundDropdownValueSpy.mockReturnValue(5);
-
+        
         actionsModule.switchToExerciseInProgressMode();
-        const expectedText = `Round 1 of 5`;
         
         expect(getRoundDropdownValueSpy).toHaveBeenCalled();    
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    
@@ -81,7 +80,7 @@ describe("actions → switchToExerciseInProgressMode()", () => {
 
         expect(updateActionSpy).not.toHaveBeenCalled();    
         expect(updateCountdownSpy).not.toHaveBeenCalled();
-        expect(updateTitleSpy).toHaveBeenCalledWith(expectedText);    
+        expect(updateTitleSpy).not.toHaveBeenCalled();
     });
 });
 
