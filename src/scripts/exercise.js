@@ -2,6 +2,26 @@ import * as uiModule from "./ui";
 import * as settingsModule from "./settings";
 import * as actionsModule from "./actions";
 
+function exerciseReady() {
+    uiModule.updateTitle("Ready");
+    uiModule.updateAction("");
+    uiModule.updateCountdown("");
+}
+
+function exerciseSteady() {
+    uiModule.updateTitle("Ready");
+    uiModule.updateAction("Steady");
+    uiModule.updateCountdown("");
+}
+
+function exerciseGo() {
+    uiModule.toggleCountdownClass();
+    uiModule.updateTitle("Ready");
+    uiModule.updateAction("Steady");
+    uiModule.updateCountdown("Go");
+    uiModule.toggleCountdownClass();
+}
+
 function exerciseInhale() {
     uiModule.updateAction("Inhale");
     uiModule.updateCountdown(`${settingsModule.settings.inhale}`);
@@ -21,7 +41,22 @@ function exerciseExhale(){
 }
 
 export function performExerciseStep(exerciseDuration){    
-    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
+    if(exerciseDuration === 22) {
+        exerciseReady();
+    }
+    
+    if(exerciseDuration === 21) {
+        exerciseSteady();
+    }
+
+    if(exerciseDuration === 20) {
+        exerciseGo();
+    }
+
+    if(exerciseDuration < 20) {
+        uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
+    }    
+
     if(exerciseDuration <=19 && exerciseDuration >= 16) {
         exerciseInhale();
     }

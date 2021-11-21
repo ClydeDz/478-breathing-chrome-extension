@@ -24,7 +24,6 @@ export function switchToExerciseInProgressMode() {
     uiModule.toggleHomeVisibility(false);
     uiModule.toggleExerciseInProgressVisibility(true);
     uiModule.toggleExerciseCompleteVisibility(false);
-    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
 }
 
 export function switchToHomeMode() {
