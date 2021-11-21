@@ -40,7 +40,11 @@ function exerciseExhale(){
     settingsModule.settings.exhale--;
 }
 
-export function performExerciseStep(exerciseDuration){    
+export function performExerciseStep(exerciseDuration) {
+    if(exerciseDuration >= 0 && exerciseDuration < 20) {
+        uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
+    }  
+
     if(exerciseDuration === 22) {
         exerciseReady();
     }
@@ -51,21 +55,17 @@ export function performExerciseStep(exerciseDuration){
 
     if(exerciseDuration === 20) {
         exerciseGo();
-    }
+    }      
 
-    if(exerciseDuration < 20 && exerciseDuration >= 0) {
-        uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
-    }    
-
-    if(exerciseDuration <=19 && exerciseDuration >= 16) {
+    if(exerciseDuration >= 16 && exerciseDuration <=19) {
         exerciseInhale();
     }
 
-    if(exerciseDuration <=15 && exerciseDuration >= 9) {
+    if(exerciseDuration >= 9 && exerciseDuration <=15) {
         exerciseHold();
     }
 
-    if(exerciseDuration <=8 && exerciseDuration >= 1) {
+    if(exerciseDuration >= 1 && exerciseDuration <=8) {
         exerciseExhale();
     }        
 
@@ -84,7 +84,7 @@ export function performExerciseStep(exerciseDuration){
         return;
     }
 
-    if(exerciseDuration <= 22 && exerciseDuration > 0) {
+    if(exerciseDuration > 0 && exerciseDuration <= 22) {
         --settingsModule.settings.exerciseDuration; 
     }    
 }
