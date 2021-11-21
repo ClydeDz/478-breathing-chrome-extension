@@ -84,7 +84,7 @@ export function performExerciseStep(exerciseDuration) {
         return;
     }
 
-    if(exerciseDuration > 0 && exerciseDuration <= 22) {
-        --settingsModule.settings.exerciseDuration; 
-    }    
+    if(exerciseDuration < 0 || exerciseDuration > 22) return;
+    
+    --settingsModule.settings.exerciseDuration;    
 }
