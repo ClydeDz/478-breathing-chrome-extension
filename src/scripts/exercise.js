@@ -53,7 +53,7 @@ export function performExerciseStep(exerciseDuration){
         exerciseGo();
     }
 
-    if(exerciseDuration < 20) {
+    if(exerciseDuration < 20 && exerciseDuration >= 0) {
         uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
     }    
 
@@ -84,5 +84,7 @@ export function performExerciseStep(exerciseDuration){
         return;
     }
 
-    --settingsModule.settings.exerciseDuration; 
+    if(exerciseDuration <= 22 && exerciseDuration > 0) {
+        --settingsModule.settings.exerciseDuration; 
+    }    
 }

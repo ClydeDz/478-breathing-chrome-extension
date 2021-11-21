@@ -6,7 +6,8 @@ import {
     hide,
     show,
     on,
-    val
+    val,
+    toggleClass
  } from "./mocks/jqueryMock";
 
 const switchToExerciseInProgressModeSpy = jest.spyOn(actionModule, "switchToExerciseInProgressMode")
@@ -176,5 +177,18 @@ describe("ui → toggleExerciseCompleteVisibility()", () => {
         uiModule.toggleExerciseCompleteVisibility(false);
         expect(jQuery).toHaveBeenCalledWith("#exerciseComplete");
         expect(hide).toHaveBeenCalled();
+    });
+});
+
+describe("ui → toggleCountdownClass()", () => {    
+    beforeEach(() => {
+        jest.clearAllMocks();
+        uiModule.initializeJQuery(jQuery);
+    });
+
+    test("triggers toggle class with the right values", () => {
+        uiModule.toggleCountdownClass();
+        expect(jQuery).toHaveBeenCalledWith("#exerciseCountdown");
+        expect(toggleClass).toHaveBeenCalledWith("animation-iteration-infinite");
     });
 });
