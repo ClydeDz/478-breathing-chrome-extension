@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "4-7-8 Breathing",
     "description": "A 4-7-8 breathing exercise ready in every new tab. Relieves stress, reduces anxiety and calms the nerves.",
-    "version": "1.0.4",
+    "version": "1.1.0",
     "author": "Clyde D'Souza",
     "homepage_url": "https://github.com/ClydeDz/478-breathing-chrome-extension",
     "icons": {
