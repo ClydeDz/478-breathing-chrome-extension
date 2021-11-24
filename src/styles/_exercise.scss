@@ -15,6 +15,9 @@
 
 #exerciseTitle {
     font-size: medium;
+    &::after {
+        content: '\00a0';
+    }
 }
 
 #exerciseAction, 

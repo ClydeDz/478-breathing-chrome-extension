@@ -14,7 +14,7 @@ describe("settings → resetExercise()", () => {
         expect(settingsModule.settings.inhale).toBe(4);
         expect(settingsModule.settings.hold).toBe(7);
         expect(settingsModule.settings.exhale).toBe(8);
-        expect(settingsModule.settings.exerciseDuration).toBe(19);
+        expect(settingsModule.settings.exerciseDuration).toBe(22);
     });
 
     test("resets all settings back to start from another value", () => {
@@ -28,7 +28,7 @@ describe("settings → resetExercise()", () => {
         expect(settingsModule.settings.inhale).toBe(4);
         expect(settingsModule.settings.hold).toBe(7);
         expect(settingsModule.settings.exhale).toBe(8);
-        expect(settingsModule.settings.exerciseDuration).toBe(19);
+        expect(settingsModule.settings.exerciseDuration).toBe(22);
     });
 });
 

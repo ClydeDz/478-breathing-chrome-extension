@@ -35,6 +35,14 @@ export const updateTitle = (value) => {
     updateElementText(jQuery("#exerciseTitle"), value);
 }
 
+function toggleClass(element, className) {
+    jQuery(element).toggleClass(className);
+}
+
+export const toggleCountdownClass = () => {
+    toggleClass("#exerciseCountdown", "animation-iteration-infinite");
+}
+
 export const getRoundDropdownValue = () => {
     return jQuery("#roundsSelection").val();
 }

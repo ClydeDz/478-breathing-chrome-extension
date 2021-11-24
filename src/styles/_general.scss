@@ -1,8 +1,8 @@
 @import "./variables";
 
 body {
-    height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: $skin;
     color: $velvet;
     font-size: calc(12px + 0.8vw);
@@ -17,15 +17,15 @@ footer {
     height: 30px;
     font-size: $font-size-small;
     text-align: center;
+    background-color: $skin;
 }
 
 .container {
     align-items: center;
-    width: 50%;
+    width: 65%;
     margin: 0 auto;
     text-align: center;
-    height: 100%;
-    padding: 10% 0;
+    padding: 9% 0;
 }
   
 h1 {

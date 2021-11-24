@@ -9,6 +9,8 @@ const updateActionSpy = jest.spyOn(uiModule, "updateAction")
     .mockImplementation(jest.fn());
 const updateCountdownSpy = jest.spyOn(uiModule, "updateCountdown")
     .mockImplementation(jest.fn());
+const toggleCountdownClassSpy = jest.spyOn(uiModule, "toggleCountdownClass")
+    .mockImplementation(jest.fn());
 
 const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
     .mockImplementation(jest.fn());
@@ -84,6 +86,49 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${rounds}`);
         expect(updateActionSpy).toHaveBeenCalledWith("Exhale");    
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${exhale}`);    
+    });
+
+    test("triggers the ready state on screen", () => {
+        exerciseModule.performExerciseStep(22);    
+        
+        expect(updateTitleSpy).toHaveBeenCalledWith("Ready");      
+        expect(updateActionSpy).toHaveBeenCalledWith("");    
+        expect(updateCountdownSpy).toHaveBeenCalledWith("");
+    });
+
+    test("triggers the steady state on screen", () => {
+        exerciseModule.performExerciseStep(21);    
+        
+        expect(updateTitleSpy).toHaveBeenCalledWith("Ready");      
+        expect(updateActionSpy).toHaveBeenCalledWith("Steady");    
+        expect(updateCountdownSpy).toHaveBeenCalledWith("");
+    });
+
+    test("triggers the go state on screen", () => {
+        exerciseModule.performExerciseStep(20);    
+        
+        expect(updateTitleSpy).toHaveBeenCalledWith("Ready");      
+        expect(updateActionSpy).toHaveBeenCalledWith("Steady");    
+        expect(updateCountdownSpy).toHaveBeenCalledWith("Go");
+        expect(toggleCountdownClassSpy).toHaveBeenCalled();
+    });
+
+    test.each([
+        23,
+        24,
+        25,
+        -1,
+        -2,
+        -3,
+    ])("doesn't update anything in the ui for values out of bounds %d", (i) => {
+        const exerciseDuration = settingsModule.settings.exerciseDuration;    
+        
+        exerciseModule.performExerciseStep(i);    
+
+        expect(settingsModule.settings.exerciseDuration).toBe(exerciseDuration);        
+        expect(updateTitleSpy).not.toHaveBeenCalled();
+        expect(updateActionSpy).not.toHaveBeenCalled();
+        expect(updateCountdownSpy).not.toHaveBeenCalled();
     });
     
     test("triggers the required updates when times up and no more rounds to go", () => {

@@ -2,6 +2,26 @@ import * as uiModule from "./ui";
 import * as settingsModule from "./settings";
 import * as actionsModule from "./actions";
 
+function exerciseReady() {
+    uiModule.updateTitle("Ready");
+    uiModule.updateAction("");
+    uiModule.updateCountdown("");
+}
+
+function exerciseSteady() {
+    uiModule.updateTitle("Ready");
+    uiModule.updateAction("Steady");
+    uiModule.updateCountdown("");
+}
+
+function exerciseGo() {
+    uiModule.toggleCountdownClass();
+    uiModule.updateTitle("Ready");
+    uiModule.updateAction("Steady");
+    uiModule.updateCountdown("Go");
+    uiModule.toggleCountdownClass();
+}
+
 function exerciseInhale() {
     uiModule.updateAction("Inhale");
     uiModule.updateCountdown(`${settingsModule.settings.inhale}`);
@@ -20,17 +40,32 @@ function exerciseExhale(){
     settingsModule.settings.exhale--;
 }
 
-export function performExerciseStep(exerciseDuration){    
-    uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
-    if(exerciseDuration <=19 && exerciseDuration >= 16) {
+export function performExerciseStep(exerciseDuration) {
+    if(exerciseDuration >= 0 && exerciseDuration < 20) {
+        uiModule.updateTitle(`Round ${settingsModule.settings.currentRound} of ${settingsModule.settings.rounds}`);
+    }  
+
+    if(exerciseDuration === 22) {
+        exerciseReady();
+    }
+    
+    if(exerciseDuration === 21) {
+        exerciseSteady();
+    }
+
+    if(exerciseDuration === 20) {
+        exerciseGo();
+    }      
+
+    if(exerciseDuration >= 16 && exerciseDuration <=19) {
         exerciseInhale();
     }
 
-    if(exerciseDuration <=15 && exerciseDuration >= 9) {
+    if(exerciseDuration >= 9 && exerciseDuration <=15) {
         exerciseHold();
     }
 
-    if(exerciseDuration <=8 && exerciseDuration >= 1) {
+    if(exerciseDuration >= 1 && exerciseDuration <=8) {
         exerciseExhale();
     }        
 
@@ -49,5 +84,7 @@ export function performExerciseStep(exerciseDuration){
         return;
     }
 
-    --settingsModule.settings.exerciseDuration; 
+    if(exerciseDuration < 0 || exerciseDuration > 22) return;
+    
+    --settingsModule.settings.exerciseDuration;    
 }
