@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Memory and instructions for AI agents (and humans) working on this repository.
-Last verified: 2026-10-08 (branch `dev/audio`, v1.2.0).
+Last verified: 2026-10-08 (branch `dev/audio`, v1.2.0; builds verified on Node 22 and Node 13).
 
 ## What this repo is
 
@@ -31,33 +31,30 @@ is preserved by CopyWebpackPlugin — see `webpack.config.js`). To try the exten
 `npm run build:prod`, then load `dist/` as an unpacked extension at
 `chrome://extensions`.
 
-## Local build gotcha (important)
+## Building on modern Node (and CI)
 
-CI (`.github/workflows/build-deploy.yml`) builds on **Node 13.x** and is the source
-of truth. On a modern local Node (≥17), `npm run build:prod` fails twice:
+`npm run build:prod` works out of the box on **Node 22** (verified 2026-10-08), and
+the output is **byte-identical** to a build run under CI's Node 13. Two fixes made
+this possible — keep both in place:
 
-1. `ERR_OSSL_EVP_UNSUPPORTED` — webpack 5's md4 hashing vs OpenSSL 3.
-   `NODE_OPTIONS=--openssl-legacy-provider` fixes only this.
-2. `node-sass@4` does not support modern Node runtimes — this is a hard blocker;
-   it needs Node ≤14 plus its prebuilt binding.
+1. `output.hashFunction: "xxhash64"` in `webpack.config.js`. Webpack's default `md4`
+   goes through OpenSSL, which Node 17+ (OpenSSL 3) removed — that was the
+   `ERR_OSSL_EVP_UNSUPPORTED` crash (it surfaced inside DefinePlugin, which hashes
+   with `compilation.outputOptions.hashFunction`).
+2. `node-sass@4` (deprecated; no binaries for modern Node) was replaced by dart-`sass`,
+   **pinned exactly to `1.60.0`** — the last release with `engines: node >=12`
+   (1.61+ requires Node ≥14; current sass requires ≥20.19). CI runs Node 13, so do
+   **not** convert this to a caret range or bump it without also bumping CI's Node
+   version. sass-loader 7.3.1 auto-detects dart-sass when node-sass is absent
+   (it prefers node-sass if installed) and accepts dart-sass `^1.3.0`.
 
-Verified working local recipe (Windows, Node 22, run from repo root):
+Install gotcha: modern npm refuses installs with ERESOLVE, because `css-loader@1`
+declares a peer on `webpack@^4` while the repo uses webpack 5 (pre-existing
+conflict). The project `.npmrc` sets `legacy-peer-deps=true` to handle this — keep
+that file (CI's npm 6 ignores the unknown key).
 
-```bash
-# one-time setup
-DIR="$HOME/.cache/node14"
-npm install --prefix "$DIR" --no-save --no-package-lock node@14.21.3
-(cd "$DIR/node_modules/node" && node installArchSpecificPackage.js)  # npm blocks this package's install script
-NODE14="$DIR/node_modules/node/bin/node.exe"
-"$NODE14" node_modules/node-sass/scripts/install.js                   # downloads node-sass prebuilt binding
-
-# build (equivalent to CI's npm run build:prod)
-"$NODE14" node_modules/webpack-cli/bin/cli.js --mode=production
-```
-
-Alternative: swap `node-sass` for dart-`sass` via sass-loader's `implementation`
-option (sass-loader 7.3.1 supports it) — but that changes the repo's toolchain, so
-prefer the recipe above unless the dependency change is actually wanted.
+Historical: before the fixes above, local builds needed a Node 14 binary plus
+node-sass's prebuilt binding — that workaround is obsolete and no longer needed.
 
 ## Architecture (`src/scripts/`)
 
@@ -150,8 +147,10 @@ Files: `src/audio/{inhale,hold,exhale,clock-one-tick}.mp3`, copied to `dist/audi
   don't touch dependency versions that happen to match. Feature = minor (1.1.1 → 1.2.0).
 - `package-lock.json` in the working tree has been regenerated to lockfileVersion 3 by
   modern npm. CI installs with Node 13 / npm 6, which predates lockfile v3 — if `npm ci`
-  starts failing in CI after committing the lockfile, either regenerate it with npm 6
-  or bump the CI Node version **to ≤14** (node-sass 4.14 caps at Node 14).
+  fails in CI after committing the lockfile, either regenerate the lock with npm 6 or
+  bump CI's Node version (16+, ideally 18; the toolchain — webpack `xxhash64`, dart-sass
+  1.60, Jest 27 — all support modern Node now, verified on Node 22). Note that npm 7+
+  enforces peer deps, so a CI bump relies on the project `.npmrc` above.
 - CI on push/PR to `main`: `npm ci` → `npm run build:prod` → `npm run test:ci` →
   uploads `dist/` artifact; pushes to `main` also publish to the Chrome Web Store
   (secrets required). Docs/markdown changes don't trigger it (`paths-ignore`).
