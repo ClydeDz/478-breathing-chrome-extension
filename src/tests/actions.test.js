@@ -2,6 +2,7 @@ import * as uiModule from "../scripts/ui";
 import * as actionsModule from "../scripts/actions";
 import * as settingsModule from "../scripts/settings";
 import * as exerciseModule from "../scripts/exercise";
+import * as audioModule from "../scripts/audio";
 
 const updateActionSpy = jest.spyOn(uiModule, "updateAction")
     .mockImplementation(jest.fn());
@@ -27,6 +28,10 @@ const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
 
 const performExerciseStepSpy = jest.spyOn(exerciseModule, "performExerciseStep")
     .mockImplementation(jest.fn());
+const playTickSpy = jest.spyOn(audioModule, "playTick")
+    .mockImplementation(jest.fn());
+const stopAllAudioSpy = jest.spyOn(audioModule, "stopAllAudio")
+    .mockImplementation(jest.fn());
 
 describe("actions → switchToExerciseCompleteMode()", () => {    
     beforeEach(() => {
@@ -39,11 +44,10 @@ describe("actions → switchToExerciseCompleteMode()", () => {
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    
         expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);    
         expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(true);    
-        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();
-
-        expect(updateActionSpy).toHaveBeenCalledWith("");    
-        expect(updateCountdownSpy).toHaveBeenCalledWith("");    
-        expect(updateTitleSpy).toHaveBeenCalledWith("");    
+        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();        expect(updateActionSpy).toHaveBeenCalledWith(""); 
+        expect(updateCountdownSpy).toHaveBeenCalledWith(""); 
+        expect(updateTitleSpy).toHaveBeenCalledWith(""); 
+        expect(stopAllAudioSpy).toHaveBeenCalled(); 
     });
 });
 
@@ -99,11 +103,10 @@ describe("actions → switchToHomeMode()", () => {
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(true);    
         expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);
         expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(false);
-        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();
-
-        expect(updateActionSpy).toHaveBeenCalledWith("");    
-        expect(updateCountdownSpy).toHaveBeenCalledWith("");    
+        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();        expect(updateActionSpy).toHaveBeenCalledWith(""); 
+        expect(updateCountdownSpy).toHaveBeenCalledWith(""); 
         expect(updateTitleSpy).toHaveBeenCalledWith("");  
+        expect(stopAllAudioSpy).toHaveBeenCalled(); 
     });
 });
 
@@ -135,6 +138,7 @@ describe("actions → startExerciseIntervalFunction()", () => {
 
         actionsModule.startExerciseIntervalFunction();
 
+        expect(playTickSpy).toHaveBeenCalled();
         expect(performExerciseStepSpy).toHaveBeenCalledWith(duration);  
     });
 });

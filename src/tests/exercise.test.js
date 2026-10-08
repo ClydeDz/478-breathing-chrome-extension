@@ -2,6 +2,7 @@ import * as uiModule from "../scripts/ui";
 import * as exerciseModule from "../scripts/exercise";
 import * as settingsModule from "../scripts/settings";
 import * as actionModule from "../scripts/actions";
+import * as audioModule from "../scripts/audio";
 
 const updateTitleSpy = jest.spyOn(uiModule, "updateTitle")
     .mockImplementation(jest.fn());
@@ -22,6 +23,8 @@ const switchToExerciseCompleteModeSpy = jest.spyOn(actionModule, "switchToExerci
 const startExerciseSpy = jest.spyOn(actionModule, "startExercise")
     .mockImplementation(jest.fn());
 const switchToRoundCompleteModeSpy = jest.spyOn(actionModule, "switchToRoundCompleteMode")
+    .mockImplementation(jest.fn());
+const playAudioCueSpy = jest.spyOn(audioModule, "playAudioCue")
     .mockImplementation(jest.fn());
 
 describe("exerciseSteps → performExerciseStep()", () => {
@@ -86,22 +89,43 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${rounds}`);
         expect(updateActionSpy).toHaveBeenCalledWith("Exhale");    
         expect(updateCountdownSpy).toHaveBeenCalledWith(`${exhale}`);    
+    });    test.each([
+        [19, "inhale"],
+        [15, "hold"],
+        [8, "exhale"]
+    ])("plays the right audio cue when a phase begins at duration %d", (duration, cue) => {
+        exerciseModule.performExerciseStep(duration);
+
+        expect(playAudioCueSpy).toHaveBeenCalledWith(cue);
+    });
+
+    test.each([
+        18,
+        17,
+        14,
+        13,
+        7,
+        6
+    ])("doesn't repeat the audio cue in the middle of a phase at duration %d", (duration) => {
+        exerciseModule.performExerciseStep(duration);
+
+        expect(playAudioCueSpy).not.toHaveBeenCalled();
     });
 
     test("triggers the ready state on screen", () => {
         exerciseModule.performExerciseStep(22);    
         
         expect(updateTitleSpy).toHaveBeenCalledWith("Ready");      
-        expect(updateActionSpy).toHaveBeenCalledWith("");    
+        expect(updateActionSpy).toHaveBeenCalledWith(""); 
         expect(updateCountdownSpy).toHaveBeenCalledWith("");
-    });
-
-    test("triggers the steady state on screen", () => {
+        expect(playAudioCueSpy).not.toHaveBeenCalled();
+    });    test("triggers the steady state on screen", () => {
         exerciseModule.performExerciseStep(21);    
         
         expect(updateTitleSpy).toHaveBeenCalledWith("Ready");      
-        expect(updateActionSpy).toHaveBeenCalledWith("Steady");    
+        expect(updateActionSpy).toHaveBeenCalledWith("Steady"); 
         expect(updateCountdownSpy).toHaveBeenCalledWith("");
+        expect(playAudioCueSpy).not.toHaveBeenCalled();
     });
 
     test("triggers the go state on screen", () => {
@@ -111,6 +135,7 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(updateActionSpy).toHaveBeenCalledWith("Steady");    
         expect(updateCountdownSpy).toHaveBeenCalledWith("Go");
         expect(toggleCountdownClassSpy).toHaveBeenCalled();
+        expect(playAudioCueSpy).not.toHaveBeenCalled();
     });
 
     test.each([
@@ -129,6 +154,7 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(updateTitleSpy).not.toHaveBeenCalled();
         expect(updateActionSpy).not.toHaveBeenCalled();
         expect(updateCountdownSpy).not.toHaveBeenCalled();
+        expect(playAudioCueSpy).not.toHaveBeenCalled();
     });
     
     test("triggers the required updates when times up and no more rounds to go", () => {

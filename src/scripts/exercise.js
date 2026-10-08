@@ -1,6 +1,7 @@
 import * as uiModule from "./ui";
 import * as settingsModule from "./settings";
 import * as actionsModule from "./actions";
+import * as audioModule from "./audio";
 
 function exerciseReady() {
     uiModule.updateTitle("Ready");
@@ -57,12 +58,24 @@ export function performExerciseStep(exerciseDuration) {
         exerciseGo();
     }      
 
+    if(exerciseDuration === 19) {
+        audioModule.playAudioCue("inhale");
+    }
+
     if(exerciseDuration >= 16 && exerciseDuration <=19) {
         exerciseInhale();
     }
 
+    if(exerciseDuration === 15) {
+        audioModule.playAudioCue("hold");
+    }
+
     if(exerciseDuration >= 9 && exerciseDuration <=15) {
         exerciseHold();
+    }
+
+    if(exerciseDuration === 8) {
+        audioModule.playAudioCue("exhale");
     }
 
     if(exerciseDuration >= 1 && exerciseDuration <=8) {

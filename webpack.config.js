@@ -51,7 +51,8 @@ module.exports = {
 			{ from: "./src/index.html" },
 			{ from: "./src/manifest.json" },
 			{ from: "icons/*", to: path.resolve(__dirname, "dist"), context: "src/" },
-			{ from: "fonts/*", to: path.resolve(__dirname, "dist"), context: "src/" }
+			{ from: "fonts/*", to: path.resolve(__dirname, "dist"), context: "src/" },
+			{ from: "audio/*", to: path.resolve(__dirname, "dist"), context: "src/" }
 		]
 		}),
 	]

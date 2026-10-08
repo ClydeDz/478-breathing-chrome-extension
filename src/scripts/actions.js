@@ -1,6 +1,7 @@
 import * as uiModule from "./ui";
 import * as settingsModule from "../scripts/settings";
 import * as exerciseModule from "./exercise";
+import * as audioModule from "./audio";
 
 export function switchToRoundCompleteMode() {
     uiModule.updateTitle("");
@@ -9,6 +10,7 @@ export function switchToRoundCompleteMode() {
 }
 
 export function switchToExerciseCompleteMode() {
+    audioModule.stopAllAudio();
     uiModule.toggleHomeVisibility(false);
     uiModule.toggleExerciseInProgressVisibility(false);
     uiModule.toggleExerciseCompleteVisibility(true);
@@ -30,6 +32,7 @@ export function switchToHomeMode() {
     settingsModule.settings.currentRound = 1;
     settingsModule.clearExerciseInterval();
     settingsModule.resetExercise();
+    audioModule.stopAllAudio();
     
     uiModule.toggleHomeVisibility(true);
     uiModule.toggleExerciseInProgressVisibility(false);
@@ -42,6 +45,7 @@ export function switchToHomeMode() {
 }
 
 export function startExerciseIntervalFunction() {
+    audioModule.playTick();
     exerciseModule.performExerciseStep(settingsModule.settings.exerciseDuration);    
 }
 
