@@ -44,7 +44,7 @@ describe("audio module", () => {
 
     test("doesn't create or play any audio while disabled", () => {
         audioModule.playAudioCue("inhale");
-        audioModule.playTick();
+        audioModule.playAudioCue("inhale-beep");
 
         expect(audioFactory).not.toHaveBeenCalled();
         expect(createdElements).toHaveLength(0);
@@ -56,24 +56,35 @@ describe("audio module", () => {
         audioModule.playAudioCue("inhale");
         audioModule.playAudioCue("hold");
         audioModule.playAudioCue("exhale");
-        audioModule.playTick();
+        audioModule.playAudioCue("inhale-beep");
+        audioModule.playAudioCue("hold-beep");
+        audioModule.playAudioCue("exhale-beep");
+        audioModule.playAudioCue("next-round");
+        audioModule.playAudioCue("complete");
 
-        expect(audioFactory).toHaveBeenCalledTimes(4);
-        expect(audioFactory).toHaveBeenCalledWith("./audio/inhale.mp3");
-        expect(audioFactory).toHaveBeenCalledWith("./audio/hold.mp3");
-        expect(audioFactory).toHaveBeenCalledWith("./audio/exhale.mp3");
-        expect(audioFactory).toHaveBeenCalledWith("./audio/clock-one-tick.mp3");
-        expect(createdElements).toHaveLength(4);
+        expect(audioFactory).toHaveBeenCalledTimes(8);
+        expect(createdElements).toHaveLength(8);
+        Object.keys(audioModule.AUDIO_SOURCES).forEach((cue) => {
+            expect(audioFactory).toHaveBeenCalledWith(audioModule.AUDIO_SOURCES[cue]);
+        });
         createdElements.forEach((element) => {
             expect(element.play).toHaveBeenCalledTimes(1);
         });
     });
 
-    test("playTick() uses the clock-one-tick audio file", () => {
-        audioModule.toggleAudio();
-        audioModule.playTick();
+    test("src/audio stays in sync: every referenced file exists and no file is orphaned", () => {
+        const fs = require("fs");
+        const path = require("path");
+        const audioDir = path.join(__dirname, "..", "audio");
 
-        expect(audioFactory).toHaveBeenCalledWith("./audio/clock-one-tick.mp3");
+        const referenced = Object.values(audioModule.AUDIO_SOURCES)
+            .map((source) => path.basename(source))
+            .sort();
+        const onDisk = fs.readdirSync(audioDir)
+            .filter((file) => file.endsWith(".mp3"))
+            .sort();
+
+        expect(onDisk).toEqual(referenced);
     });
 
     test("reuses the same audio element for repeated cues", () => {

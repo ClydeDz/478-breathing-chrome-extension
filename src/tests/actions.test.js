@@ -28,8 +28,6 @@ const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
 
 const performExerciseStepSpy = jest.spyOn(exerciseModule, "performExerciseStep")
     .mockImplementation(jest.fn());
-const playTickSpy = jest.spyOn(audioModule, "playTick")
-    .mockImplementation(jest.fn());
 const stopAllAudioSpy = jest.spyOn(audioModule, "stopAllAudio")
     .mockImplementation(jest.fn());
 
@@ -138,7 +136,6 @@ describe("actions → startExerciseIntervalFunction()", () => {
 
         actionsModule.startExerciseIntervalFunction();
 
-        expect(playTickSpy).toHaveBeenCalled();
         expect(performExerciseStepSpy).toHaveBeenCalledWith(duration);  
     });
 });

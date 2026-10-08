@@ -45,7 +45,6 @@ export function switchToHomeMode() {
 }
 
 export function startExerciseIntervalFunction() {
-    audioModule.playTick();
     exerciseModule.performExerciseStep(settingsModule.settings.exerciseDuration);    
 }
 

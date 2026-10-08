@@ -100,16 +100,39 @@ describe("exerciseSteps → performExerciseStep()", () => {
     });
 
     test.each([
-        18,
-        17,
-        14,
-        13,
-        7,
-        6
-    ])("doesn't repeat the audio cue in the middle of a phase at duration %d", (duration) => {
+        [19, "inhale-beep"],
+        [18, "inhale-beep"],
+        [17, "inhale-beep"],
+        [16, "inhale-beep"],
+        [15, "hold-beep"],
+        [14, "hold-beep"],
+        [13, "hold-beep"],
+        [12, "hold-beep"],
+        [11, "hold-beep"],
+        [10, "hold-beep"],
+        [9, "hold-beep"],
+        [8, "exhale-beep"],
+        [7, "exhale-beep"],
+        [6, "exhale-beep"],
+        [5, "exhale-beep"],
+        [4, "exhale-beep"],
+        [3, "exhale-beep"],
+        [2, "exhale-beep"],
+        [1, "exhale-beep"]
+    ])("duration %d plays the phase beep on every tick of the phase", (duration, beep) => {
         exerciseModule.performExerciseStep(duration);
 
-        expect(playAudioCueSpy).not.toHaveBeenCalled();
+        expect(playAudioCueSpy).toHaveBeenCalledWith(beep);
+    });
+
+    test.each([
+        [18, "inhale"],
+        [14, "hold"],
+        [7, "exhale"]
+    ])("duration %d doesn't repeat the spoken cue mid-phase", (duration, voiceCue) => {
+        exerciseModule.performExerciseStep(duration);
+
+        expect(playAudioCueSpy).not.toHaveBeenCalledWith(voiceCue);
     });
 
     test("triggers the ready state on screen", () => {
@@ -167,6 +190,8 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(clearExerciseIntervalSpy).toHaveBeenCalled();
         expect(settingsModule.settings.currentRound).toBe(currentRound + 1);
         expect(switchToExerciseCompleteModeSpy).toHaveBeenCalled();
+        expect(playAudioCueSpy).toHaveBeenCalledWith("complete");
+        expect(playAudioCueSpy).not.toHaveBeenCalledWith("next-round");
     });
 
     test("triggers the required updates when times up but more rounds to go", () => {
@@ -181,6 +206,8 @@ describe("exerciseSteps → performExerciseStep()", () => {
 
         expect(startExerciseSpy).toHaveBeenCalled();
         expect(switchToRoundCompleteModeSpy).toHaveBeenCalled();        
+        expect(playAudioCueSpy).toHaveBeenCalledWith("next-round");
+        expect(playAudioCueSpy).not.toHaveBeenCalledWith("complete");
 
         expect(switchToExerciseCompleteModeSpy).not.toHaveBeenCalled();
     });

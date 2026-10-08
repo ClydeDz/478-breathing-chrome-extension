@@ -1,8 +1,12 @@
-const AUDIO_SOURCES = {
+export const AUDIO_SOURCES = {
     inhale: "./audio/inhale.mp3",
     hold: "./audio/hold.mp3",
     exhale: "./audio/exhale.mp3",
-    tick: "./audio/clock-one-tick.mp3"
+    "inhale-beep": "./audio/inhale-beep.mp3",
+    "hold-beep": "./audio/hold-beep.mp3",
+    "exhale-beep": "./audio/exhale-beep.mp3",
+    "next-round": "./audio/next-round.mp3",
+    complete: "./audio/complete.mp3"
 };
 
 let audioEnabled = false;
@@ -57,8 +61,6 @@ export const playAudioCue = (cue) => {
     if (!audioEnabled || !AUDIO_SOURCES[cue]) return;
     restartAndPlay(getAudioElement(cue));
 };
-
-export const playTick = () => playAudioCue("tick");
 
 export const stopAllAudio = () => {
     Object.keys(audioElements).forEach((cue) => {

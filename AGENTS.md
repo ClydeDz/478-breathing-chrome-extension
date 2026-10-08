@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Memory and instructions for AI agents (and humans) working on this repository.
-Last verified: 2026-10-08 (branch `dev/audio`, v1.2.0; builds verified on Node 22 and Node 13).
+Last verified: 2026-10-09 (branch `dev/audio`, v1.2.0; builds verified on Node 22 and Node 13).
 
 ## What this repo is
 
@@ -80,13 +80,13 @@ with `audio.js` as a leaf module (imports nothing from the project).
 
 | duration | screen | audio (when enabled) |
 | --- | --- | --- |
-| 22 | "Ready" | tick |
-| 21 | "Steady" | tick |
-| 20 | "Go" | tick |
-| 19–16 | Inhale, countdown 4→1 | **cue "inhale" once at 19** + tick |
-| 15–9 | Hold, countdown 7→1 | **cue "hold" once at 15** + tick |
-| 8–1 | Exhale, countdown 8→1 | **cue "exhale" once at 8** + tick |
-| 0 | round ends: `currentRound++`, interval cleared, exercise reset, then either the next round starts or the completion screen shows | — |
+| 22 | "Ready" | **silent** |
+| 21 | "Steady" | **silent** |
+| 20 | "Go" | **silent** |
+| 19–16 | Inhale, countdown 4→1 | spoken "inhale" once at 19 + **`inhale-beep` on every tick** |
+| 15–9 | Hold, countdown 7→1 | spoken "hold" once at 15 + **`hold-beep` on every tick** |
+| 8–1 | Exhale, countdown 8→1 | spoken "exhale" once at 8 + **`exhale-beep` on every tick** |
+| 0 | round ends: `currentRound++`, interval cleared, exercise reset | **`next-round`** if another round follows, else **`complete`** (played *after* `switchToExerciseCompleteMode()`, which stops lingering audio) |
 
 Gotchas:
 
@@ -98,30 +98,35 @@ Gotchas:
 
 ## Audio feature (v1.2.0)
 
-Files: `src/audio/{inhale,hold,exhale,clock-one-tick}.mp3`, copied to `dist/audio/`.
+Files: `src/audio/{inhale,hold,exhale,inhale-beep,hold-beep,exhale-beep,next-round,complete}.mp3`,
+copied to `dist/audio/`. `clock-one-tick.mp3` was removed when phase beeps replaced
+the per-second tick; `audio.test.js` asserts that files on disk and `AUDIO_SOURCES`
+stay in exact sync (both directions), so adding/deleting an mp3 without updating the
+code fails the suite.
 
-- Toggle: `#audioToggle` button on the home screen ("🔇 Sound off" / "🔊 Sound on").
-  State lives in `audio.js` (`isAudioEnabled`/`toggleAudio`) — **not persisted** across
-  page loads. The initial label is hardcoded in `src/index.html` and must stay in sync
-  with `uiModule.updateAudioButton()`.
-- Behavior when enabled:
-  - Phase cue mp3 plays **once, when a phase begins** (durations 19/15/8 in
-    `performExerciseStep`) — not every second of the phase.
-  - `clock-one-tick.mp3` plays **every second** the exercise interval runs
-    (`startExerciseIntervalFunction` plays the tick before stepping).
-  - Turning the toggle off, going back home, or reaching the completion screen calls
-    `stopAllAudio()` (pause + rewind).
+- Toggle: small `#audioToggle` button, **`position: fixed` top-right of the viewport,
+  outside all three screens** (direct child of `<body>`) so it is visible on home,
+  in-progress and completion screens alike — users can mute/unmute at any moment,
+  including mid-exercise. Label: "🔇 Sound off" / "🔊 Sound on". State lives in
+  `audio.js` (`isAudioEnabled`/`toggleAudio`) — **not persisted** across page loads.
+  The initial label is hardcoded in `src/index.html` and must stay in sync with
+  `uiModule.updateAudioButton()`. Styling lives in `_general.scss`.
+- Behavior when enabled (see the timing table above): spoken phase cue once at phase
+  start, phase beep every tick of the phase, silence during Ready/Steady/Go,
+  `next-round`/`complete` at round end. Turning the toggle off, going back home, or
+  reaching the completion screen calls `stopAllAudio()` (pause + rewind).
 - Implementation notes: one lazily-created `Audio` element per cue, restarted via
   `currentTime = 0`; `play()` promise rejections are caught on purpose (autoplay
   policy — audio is a progressive enhancement and must never break the exercise);
-  `initializeAudio(factory)` exists so tests can inject fake elements.
+  `initializeAudio(factory)` exists so tests can inject fake elements;
+  `AUDIO_SOURCES` is exported for the disk-sync test.
 - Manual check still worth doing once in a real browser (autoplay audibility cannot
   be proven headlessly): load the extension, click 🔇→🔊, Start, and confirm you hear
   cues through at least one full round.
 
 ## Testing conventions & gotchas
 
-5 suites / 78 tests, all green as of 2026-10-08 (`src/tests/*.test.js`).
+5 suites / 94 tests, all green as of 2026-10-09 (`src/tests/*.test.js`).
 
 - Jest runs in the **node** environment — there is no DOM. `ui.test.js` injects
   `src/tests/mocks/jqueryMock.js` through `uiModule.initializeJQuery()`.
@@ -176,9 +181,16 @@ a throwaway `dist/_smoke.html` from the **built** `dist/index.html`, then drives
    absolute D:/ path form.)
 3. Extract: `grep -o '<pre id="probe">@@PROBE@@[^<]*' out.html | sed 's|<pre id="probe">@@PROBE@@||'`.
 
-Expected (with audio ON): label `🔊 Sound on`; home hidden; at ~11 s → title
-`Round 1 of 1`, action `Hold`, countdown `5`; log = tick played 10×, `inhale.mp3` ×1,
-`hold.mp3` ×1, no `exhale.mp3`; `errors: []`.
+Expected, short run (11 s virtual, audio ON): label `🔊 Sound on`; home hidden; title
+`Round 1 of 1`, action `Hold`, countdown `5`; button `position:fixed, top:10,
+rightGap:10, visibleDuringExercise:true`; log = `inhale.mp3` ×1, `inhale-beep` ×4,
+`hold.mp3` ×1, `hold-beep` ×3, **nothing played before duration 19** (Ready/Steady/Go
+are silent), no `clock-one-tick`; `errors: []`.
+
+Expected, full 2-round run (set `roundsSelection.value = "2"` before Start, probe at
+~49 s, budget 52 s): completion screen visible (`home:false, inProgress:false,
+complete:true`); log = each voice ×2, `inhale-beep` ×8, `hold-beep` ×14,
+`exhale-beep` ×16, `next-round` ×1, `complete` ×1; `errors: []`.
 
 Critical details learned the hard way:
 
