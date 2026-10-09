@@ -5,4 +5,4 @@ A 4-7-8 breathing exercise ready in every new tab. Inhale for **4** seconds, hol
 ## Credits
 
 Developed by [Clyde D'Souza](https://clydedsouza.net/)
-Audio from [onlinepianist.com](https://www.onlinepianist.com/virtual-piano)
+Audio from [onlinepianist.com](https://www.onlinepianist.com/virtual-piano) and [voicemaker.in](https://voicemaker.in/)
