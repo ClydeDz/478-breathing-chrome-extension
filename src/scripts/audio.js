@@ -1,4 +1,5 @@
 export const AUDIO_SOURCES = {
+    "lets-begin": "./audio/lets-begin.mp3",
     inhale: "./audio/inhale.mp3",
     hold: "./audio/hold.mp3",
     exhale: "./audio/exhale.mp3",
@@ -49,11 +50,22 @@ function restartAndPlay(element) {
     }
 }
 
+// Eagerly create (and thereby fetch, via preload="auto") every audio element.
+// Doing this at toggle time means the first cue of the exercise doesn't pay the
+// one-time cost of creating/fetching an element while it should already be audible.
+function preloadAudio() {
+    Object.keys(AUDIO_SOURCES).forEach((cue) => getAudioElement(cue));
+}
+
 export const isAudioEnabled = () => audioEnabled;
 
 export const toggleAudio = () => {
     audioEnabled = !audioEnabled;
-    if (!audioEnabled) stopAllAudio();
+    if (audioEnabled) {
+        preloadAudio();
+    } else {
+        stopAllAudio();
+    }
     return audioEnabled;
 };
 

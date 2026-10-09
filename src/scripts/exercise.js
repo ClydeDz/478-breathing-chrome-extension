@@ -47,6 +47,9 @@ export function performExerciseStep(exerciseDuration) {
     }  
 
     if(exerciseDuration === 22) {
+        if(settingsModule.settings.currentRound === 1) {
+            audioModule.playAudioCue("lets-begin");
+        }
         exerciseReady();
     }
     

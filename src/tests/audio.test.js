@@ -50,20 +50,27 @@ describe("audio module", () => {
         expect(createdElements).toHaveLength(0);
     });
 
+    test("preloads every audio element as soon as audio is turned on", () => {
+        audioModule.toggleAudio();
+
+        expect(audioFactory).toHaveBeenCalledTimes(Object.keys(audioModule.AUDIO_SOURCES).length);
+        Object.keys(audioModule.AUDIO_SOURCES).forEach((cue) => {
+            expect(audioFactory).toHaveBeenCalledWith(audioModule.AUDIO_SOURCES[cue]);
+        });
+        createdElements.forEach((element) => {
+            expect(element.play).not.toHaveBeenCalled();
+        });
+    });
+
     test("creates an audio element per cue and plays it when enabled", () => {
         audioModule.toggleAudio();
 
-        audioModule.playAudioCue("inhale");
-        audioModule.playAudioCue("hold");
-        audioModule.playAudioCue("exhale");
-        audioModule.playAudioCue("inhale-beep");
-        audioModule.playAudioCue("hold-beep");
-        audioModule.playAudioCue("exhale-beep");
-        audioModule.playAudioCue("next-round");
-        audioModule.playAudioCue("complete");
+        Object.keys(audioModule.AUDIO_SOURCES).forEach((cue) => {
+            audioModule.playAudioCue(cue);
+        });
 
-        expect(audioFactory).toHaveBeenCalledTimes(8);
-        expect(createdElements).toHaveLength(8);
+        expect(audioFactory).toHaveBeenCalledTimes(Object.keys(audioModule.AUDIO_SOURCES).length);
+        expect(createdElements).toHaveLength(Object.keys(audioModule.AUDIO_SOURCES).length);
         Object.keys(audioModule.AUDIO_SOURCES).forEach((cue) => {
             expect(audioFactory).toHaveBeenCalledWith(audioModule.AUDIO_SOURCES[cue]);
         });
@@ -89,19 +96,23 @@ describe("audio module", () => {
 
     test("reuses the same audio element for repeated cues", () => {
         audioModule.toggleAudio();
+        const preloadedCount = createdElements.length;
 
         audioModule.playAudioCue("inhale");
         audioModule.playAudioCue("inhale");
 
-        expect(audioFactory).toHaveBeenCalledTimes(1);
-        expect(createdElements[0].play).toHaveBeenCalledTimes(2);
+        expect(createdElements).toHaveLength(preloadedCount);
+        expect(audioFactory).toHaveBeenCalledTimes(preloadedCount);
+        const inhaleElement = createdElements.find((element) => element.source === "./audio/inhale.mp3");
+        expect(inhaleElement.play).toHaveBeenCalledTimes(2);
     });
 
     test("restarts the audio from the beginning on every play", () => {
         audioModule.toggleAudio();
+        const inhaleElement = createdElements.find((element) => element.source === "./audio/inhale.mp3");
 
         audioModule.playAudioCue("inhale");
-        createdElements[0].currentTime = 5;
+        inhaleElement.currentTime = 5;
         audioModule.playAudioCue("inhale");
 
         expect(playedCurrentTimes).toEqual([0, 0]);
@@ -109,9 +120,13 @@ describe("audio module", () => {
 
     test("ignores cues it doesn't know about", () => {
         audioModule.toggleAudio();
+        const preloadedCount = createdElements.length;
         audioModule.playAudioCue("gong");
 
-        expect(audioFactory).not.toHaveBeenCalled();
+        expect(createdElements).toHaveLength(preloadedCount);
+        createdElements.forEach((element) => {
+            expect(element.play).not.toHaveBeenCalled();
+        });
     });
 
     test("stopAllAudio() pauses and rewinds every created element", () => {
@@ -121,10 +136,11 @@ describe("audio module", () => {
 
         audioModule.stopAllAudio();
 
-        expect(createdElements[0].pause).toHaveBeenCalledTimes(1);
-        expect(createdElements[1].pause).toHaveBeenCalledTimes(1);
-        expect(createdElements[0].currentTime).toBe(0);
-        expect(createdElements[1].currentTime).toBe(0);
+        expect(createdElements.length).toBeGreaterThan(0);
+        createdElements.forEach((element) => {
+            expect(element.pause).toHaveBeenCalledTimes(1);
+            expect(element.currentTime).toBe(0);
+        });
     });
 
     test("toggling audio off stops anything that is playing", () => {
@@ -134,8 +150,9 @@ describe("audio module", () => {
         audioModule.toggleAudio();
 
         expect(audioModule.isAudioEnabled()).toBe(false);
-        expect(createdElements[0].pause).toHaveBeenCalledTimes(1);
-        expect(createdElements[0].currentTime).toBe(0);
+        const exhaleElement = createdElements.find((element) => element.source === "./audio/exhale.mp3");
+        expect(exhaleElement.pause).toHaveBeenCalledTimes(1);
+        expect(exhaleElement.currentTime).toBe(0);
     });
 
     test("survives play() rejections caused by browser autoplay policies", () => {

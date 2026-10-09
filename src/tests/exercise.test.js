@@ -135,13 +135,23 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(playAudioCueSpy).not.toHaveBeenCalledWith(voiceCue);
     });
 
-    test("triggers the ready state on screen", () => {
+    test("triggers the ready state on screen with the lets-begin cue on round 1", () => {
         exerciseModule.performExerciseStep(22);    
         
         expect(updateTitleSpy).toHaveBeenCalledWith("Ready");      
         expect(updateActionSpy).toHaveBeenCalledWith(""); 
         expect(updateCountdownSpy).toHaveBeenCalledWith("");
-        expect(playAudioCueSpy).not.toHaveBeenCalled();
+        expect(playAudioCueSpy).toHaveBeenCalledWith("lets-begin");
+    });
+
+    test("doesn't play the lets-begin cue after round 1", () => {
+        const originalRound = settingsModule.settings.currentRound;
+        settingsModule.settings.currentRound = 2;
+
+        exerciseModule.performExerciseStep(22);
+
+        expect(playAudioCueSpy).not.toHaveBeenCalledWith("lets-begin");
+        settingsModule.settings.currentRound = originalRound;
     });    test("triggers the steady state on screen", () => {
         exerciseModule.performExerciseStep(21);    
         

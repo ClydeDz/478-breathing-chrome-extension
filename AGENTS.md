@@ -80,7 +80,7 @@ with `audio.js` as a leaf module (imports nothing from the project).
 
 | duration | screen | audio (when enabled) |
 | --- | --- | --- |
-| 22 | "Ready" | **silent** |
+| 22 | "Ready" | **`lets-begin` on round 1 only** (warms up audio before the first beep); rounds 2+ are silent |
 | 21 | "Steady" | **silent** |
 | 20 | "Go" | **silent** |
 | 19–16 | Inhale, countdown 4→1 | spoken "inhale" once at 19 + **`inhale-beep` on every tick** |
@@ -98,35 +98,41 @@ Gotchas:
 
 ## Audio feature (v1.2.0)
 
-Files: `src/audio/{inhale,hold,exhale,inhale-beep,hold-beep,exhale-beep,next-round,complete}.mp3`,
+Files: `src/audio/{lets-begin,inhale,hold,exhale,inhale-beep,hold-beep,exhale-beep,next-round,complete}.mp3`,
 copied to `dist/audio/`. `clock-one-tick.mp3` was removed when phase beeps replaced
 the per-second tick; `audio.test.js` asserts that files on disk and `AUDIO_SOURCES`
 stay in exact sync (both directions), so adding/deleting an mp3 without updating the
 code fails the suite.
 
-- Toggle: small `#audioToggle` button, **`position: fixed` top-right of the viewport,
-  outside all three screens** (direct child of `<body>`) so it is visible on home,
+- Toggle: small `#audioToggle` button, **`position: fixed` top-LEFT of the viewport
+  (the top-right corner hosts the exercise close icon `#exerciseEnd`)**, outside all
+  three screens (direct child of `<body>`) so it is visible on home,
   in-progress and completion screens alike — users can mute/unmute at any moment,
   including mid-exercise. Label: "🔇 Sound off" / "🔊 Sound on". State lives in
   `audio.js` (`isAudioEnabled`/`toggleAudio`) — **not persisted** across page loads.
   The initial label is hardcoded in `src/index.html` and must stay in sync with
   `uiModule.updateAudioButton()`. Styling lives in `_general.scss`.
-- Behavior when enabled (see the timing table above): spoken phase cue once at phase
-  start, phase beep every tick of the phase, silence during Ready/Steady/Go,
+- Behavior when enabled (see the timing table above): `lets-begin` at duration 22 of
+  round 1, spoken phase cue once at phase start, phase beep every tick of the phase,
+  silence during Ready/Steady/Go (except the round-1 `lets-begin`),
   `next-round`/`complete` at round end. Turning the toggle off, going back home, or
   reaching the completion screen calls `stopAllAudio()` (pause + rewind).
-- Implementation notes: one lazily-created `Audio` element per cue, restarted via
-  `currentTime = 0`; `play()` promise rejections are caught on purpose (autoplay
-  policy — audio is a progressive enhancement and must never break the exercise);
-  `initializeAudio(factory)` exists so tests can inject fake elements;
-  `AUDIO_SOURCES` is exported for the disk-sync test.
+- Implementation notes: **all audio elements are created eagerly the moment the
+  toggle turns on** (`preloadAudio()`; elements use `preload = "auto"`), so the first
+  cue of an exercise never pays the create/fetch cost mid-exercise — this fixed the
+  "first inhale beep inaudible on the very first run" bug, with `lets-begin` also
+  warming the audio output during the silent Ready second. One shared `Audio`
+  element per cue afterwards, restarted via `currentTime = 0`; `play()` promise
+  rejections are caught on purpose (autoplay policy — audio is a progressive
+  enhancement and must never break the exercise); `initializeAudio(factory)` exists
+  so tests can inject fake elements; `AUDIO_SOURCES` is exported for the disk-sync test.
 - Manual check still worth doing once in a real browser (autoplay audibility cannot
   be proven headlessly): load the extension, click 🔇→🔊, Start, and confirm you hear
   cues through at least one full round.
 
 ## Testing conventions & gotchas
 
-5 suites / 94 tests, all green as of 2026-10-09 (`src/tests/*.test.js`).
+5 suites / 96 tests, all green as of 2026-10-09 (`src/tests/*.test.js`).
 
 - Jest runs in the **node** environment — there is no DOM. `ui.test.js` injects
   `src/tests/mocks/jqueryMock.js` through `uiModule.initializeJQuery()`.
@@ -183,14 +189,14 @@ a throwaway `dist/_smoke.html` from the **built** `dist/index.html`, then drives
 
 Expected, short run (11 s virtual, audio ON): label `🔊 Sound on`; home hidden; title
 `Round 1 of 1`, action `Hold`, countdown `5`; button `position:fixed, top:10,
-rightGap:10, visibleDuringExercise:true`; log = `inhale.mp3` ×1, `inhale-beep` ×4,
-`hold.mp3` ×1, `hold-beep` ×3, **nothing played before duration 19** (Ready/Steady/Go
-are silent), no `clock-one-tick`; `errors: []`.
+leftGap:10, visibleDuringExercise:true`; log `created:` = all 9 elements at toggle
+time (preload), `played:` = `lets-begin` ×1 (duration 22), `inhale.mp3` ×1,
+`inhale-beep` ×4, `hold.mp3` ×1, `hold-beep` ×3, no `clock-one-tick`; `errors: []`.
 
 Expected, full 2-round run (set `roundsSelection.value = "2"` before Start, probe at
 ~49 s, budget 52 s): completion screen visible (`home:false, inProgress:false,
-complete:true`); log = each voice ×2, `inhale-beep` ×8, `hold-beep` ×14,
-`exhale-beep` ×16, `next-round` ×1, `complete` ×1; `errors: []`.
+complete:true`); log = `lets-begin` ×1 (round 1 only), each voice ×2, `inhale-beep` ×8,
+`hold-beep` ×14, `exhale-beep` ×16, `next-round` ×1, `complete` ×1; `errors: []`.
 
 Critical details learned the hard way:
 
