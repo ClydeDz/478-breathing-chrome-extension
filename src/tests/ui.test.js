@@ -1,5 +1,6 @@
 import * as uiModule from "../scripts/ui";
 import * as actionModule from "../scripts/actions";
+import * as audioModule from "../scripts/audio";
 import { 
     jQuery, 
     text,
@@ -27,9 +28,11 @@ describe("ui → initTriggers()", () => {
         uiModule.initTriggers();
         expect(jQuery).toHaveBeenCalledWith("#start");
         expect(jQuery).toHaveBeenCalledWith("#exerciseEnd, #exerciseCompleteToHome");
-        expect(on).toHaveBeenCalledTimes(2);
+        expect(jQuery).toHaveBeenCalledWith("#audioToggle");
+        expect(on).toHaveBeenCalledTimes(3);
         expect(on).toHaveBeenCalledWith("click", uiModule.startButtonTrigger);
-        expect(on).toHaveBeenLastCalledWith("click", uiModule.completeButtonTrigger);
+        expect(on).toHaveBeenCalledWith("click", uiModule.completeButtonTrigger);
+        expect(on).toHaveBeenLastCalledWith("click", uiModule.audioButtonTrigger);
     });
 });
 
@@ -44,9 +47,7 @@ describe("ui → startButtonTrigger()", () => {
         expect(switchToExerciseInProgressModeSpy).toHaveBeenCalled();
         expect(startExerciseSpy).toHaveBeenCalled();
     });
-});
-
-describe("ui → completeButtonTrigger()", () => {    
+});describe("ui → completeButtonTrigger()", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         uiModule.initializeJQuery(jQuery);
@@ -55,6 +56,36 @@ describe("ui → completeButtonTrigger()", () => {
     test("binds triggers", () => {
         uiModule.completeButtonTrigger();
         expect(switchToHomeModeSpy).toHaveBeenCalled();
+    });
+});
+
+describe("ui → audioButtonTrigger()", () => {
+    const toggleAudioSpy = jest.spyOn(audioModule, "toggleAudio")
+        .mockImplementation(jest.fn());
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        uiModule.initializeJQuery(jQuery);
+    });
+
+    test("turns audio on and updates the button label", () => {
+        toggleAudioSpy.mockReturnValue(true);
+
+        uiModule.audioButtonTrigger();
+
+        expect(toggleAudioSpy).toHaveBeenCalled();
+        expect(jQuery).toHaveBeenCalledWith("#audioToggle");
+        expect(text).toHaveBeenCalledWith("\ud83d\udd0a Sound on");
+    });
+
+    test("turns audio off and updates the button label", () => {
+        toggleAudioSpy.mockReturnValue(false);
+
+        uiModule.audioButtonTrigger();
+
+        expect(toggleAudioSpy).toHaveBeenCalled();
+        expect(jQuery).toHaveBeenCalledWith("#audioToggle");
+        expect(text).toHaveBeenCalledWith("\ud83d\udd07 Sound off");
     });
 });
 

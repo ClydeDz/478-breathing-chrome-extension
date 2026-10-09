@@ -1,4 +1,5 @@
 import * as actionsModule from "./actions";
+import * as audioModule from "./audio";
 var jQuery;
 
 export const initializeJQuery = (jQueryInstance) => {
@@ -14,9 +15,15 @@ export const completeButtonTrigger = () => {
     actionsModule.switchToHomeMode();
 }
 
+export const audioButtonTrigger = () => {
+    const audioEnabled = audioModule.toggleAudio();
+    updateAudioButton(audioEnabled);
+}
+
 export const initTriggers = () => {
     jQuery("#start").on("click", startButtonTrigger);
     jQuery("#exerciseEnd, #exerciseCompleteToHome").on("click", completeButtonTrigger);
+    jQuery("#audioToggle").on("click", audioButtonTrigger);
 }
 
 function updateElementText(element, text) {
@@ -33,6 +40,10 @@ export const updateCountdown = (value) => {
 
 export const updateTitle = (value) => {
     updateElementText(jQuery("#exerciseTitle"), value);
+}
+
+export const updateAudioButton = (enabled) => {
+    updateElementText(jQuery("#audioToggle"), enabled ? "\ud83d\udd0a Sound on" : "\ud83d\udd07 Sound off");
 }
 
 function toggleClass(element, className) {

@@ -1,6 +1,7 @@
 import * as uiModule from "./ui";
 import * as settingsModule from "./settings";
 import * as actionsModule from "./actions";
+import * as audioModule from "./audio";
 
 function exerciseReady() {
     uiModule.updateTitle("Ready");
@@ -46,6 +47,9 @@ export function performExerciseStep(exerciseDuration) {
     }  
 
     if(exerciseDuration === 22) {
+        if(settingsModule.settings.currentRound === 1) {
+            audioModule.playAudioCue("lets-begin");
+        }
         exerciseReady();
     }
     
@@ -57,15 +61,30 @@ export function performExerciseStep(exerciseDuration) {
         exerciseGo();
     }      
 
+    if(exerciseDuration === 19) {
+        audioModule.playAudioCue("inhale");
+    }
+
     if(exerciseDuration >= 16 && exerciseDuration <=19) {
+        audioModule.playAudioCue("inhale-beep");
         exerciseInhale();
     }
 
+    if(exerciseDuration === 15) {
+        audioModule.playAudioCue("hold");
+    }
+
     if(exerciseDuration >= 9 && exerciseDuration <=15) {
+        audioModule.playAudioCue("hold-beep");
         exerciseHold();
     }
 
+    if(exerciseDuration === 8) {
+        audioModule.playAudioCue("exhale");
+    }
+
     if(exerciseDuration >= 1 && exerciseDuration <=8) {
+        audioModule.playAudioCue("exhale-beep");
         exerciseExhale();
     }        
 
@@ -75,12 +94,16 @@ export function performExerciseStep(exerciseDuration) {
         settingsModule.resetExercise();
 
         if(settingsModule.settings.currentRound <= settingsModule.settings.rounds) {
+            audioModule.playAudioCue("next-round");
             actionsModule.switchToRoundCompleteMode();
             actionsModule.startExercise();
             return;
         }
         
         actionsModule.switchToExerciseCompleteMode()
+        // After the mode switch: it stops lingering audio, so the completion
+        // cue has to be played afterwards to actually be heard.
+        audioModule.playAudioCue("complete");
         return;
     }
 

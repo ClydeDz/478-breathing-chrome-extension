@@ -6,6 +6,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    // "xxhash64" instead of the default "md4": md4 goes through OpenSSL, which
+    // Node 17+ (OpenSSL 3) no longer provides, so md4 breaks builds on modern Node.
+    hashFunction: "xxhash64"
   },
   module: {
 		rules: [
@@ -51,7 +54,8 @@ module.exports = {
 			{ from: "./src/index.html" },
 			{ from: "./src/manifest.json" },
 			{ from: "icons/*", to: path.resolve(__dirname, "dist"), context: "src/" },
-			{ from: "fonts/*", to: path.resolve(__dirname, "dist"), context: "src/" }
+			{ from: "fonts/*", to: path.resolve(__dirname, "dist"), context: "src/" },
+			{ from: "audio/*", to: path.resolve(__dirname, "dist"), context: "src/" }
 		]
 		}),
 	]

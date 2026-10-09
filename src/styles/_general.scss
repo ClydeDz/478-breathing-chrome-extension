@@ -64,4 +64,19 @@ select {
     display: inline-block;
     content: "\00d7"; 
 }
+
+// Small, always-visible sound toggle in the top-left corner (the top-right is
+// taken by the exercise close icon), so users can mute/unmute at any point —
+// including mid-exercise with eyes closed.
+#audioToggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    margin: 0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: $font-size-small;
+    letter-spacing: 1px;
+}
   
