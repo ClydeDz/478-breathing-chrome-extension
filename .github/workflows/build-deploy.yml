@@ -19,9 +19,11 @@ jobs:
     name: Build chrome extension
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       checks: write
       pull-requests: write
+      issues: write
+      statuses: write
+      contents: write
 
     steps:
       - name: Checkout code
