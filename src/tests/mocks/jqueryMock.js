@@ -4,6 +4,7 @@ export const hide = jest.fn();
 export const show = jest.fn();
 export const on = jest.fn();
 export const toggleClass = jest.fn();
+export const prop = jest.fn(() => {return false;});
 
 export const jQuery = jest.fn(() => ({
     text,
@@ -11,5 +12,6 @@ export const jQuery = jest.fn(() => ({
     hide,
     show,
     on,
-    toggleClass
+    toggleClass,
+    prop
 }));

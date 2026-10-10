@@ -20,6 +20,8 @@ const toggleExerciseCompleteVisibilitySpy = jest.spyOn(uiModule, "toggleExercise
     .mockImplementation(jest.fn());
 const getRoundDropdownValueSpy = jest.spyOn(uiModule, "getRoundDropdownValue")
     .mockImplementation(jest.fn());
+const getPauseBetweenRoundsValueSpy = jest.spyOn(uiModule, "getPauseBetweenRoundsValue")
+    .mockImplementation(jest.fn());
 
 const clearExerciseIntervalSpy = jest.spyOn(settingsModule, "clearExerciseInterval")
     .mockImplementation(jest.fn());
@@ -72,8 +74,12 @@ describe("actions → switchToExerciseInProgressMode()", () => {
 
     test("updates required ui elements", () => {
         getRoundDropdownValueSpy.mockReturnValue(5);
+        getPauseBetweenRoundsValueSpy.mockReturnValue(true);
         
         actionsModule.switchToExerciseInProgressMode();
+
+        expect(getPauseBetweenRoundsValueSpy).toHaveBeenCalled();
+        expect(settingsModule.settings.pauseBetweenRounds).toBe(true);
         
         expect(getRoundDropdownValueSpy).toHaveBeenCalled();    
         expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    

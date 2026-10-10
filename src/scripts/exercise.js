@@ -94,8 +94,19 @@ export function performExerciseStep(exerciseDuration) {
         settingsModule.resetExercise();
 
         if(settingsModule.settings.currentRound <= settingsModule.settings.rounds) {
-            audioModule.playAudioCue("next-round");
-            actionsModule.switchToRoundCompleteMode();
+            if(settingsModule.settings.pauseBetweenRounds) {
+                audioModule.playAudioCue("next-round");
+                actionsModule.switchToRoundCompleteMode();
+            } else {
+                // No pause: skip the round-complete screen and the
+                // Ready/Steady/Go lead-in, and flow straight from this
+                // exhale into the next round's inhale. The duration-19 step
+                // owns the spoken "inhale" cue and the first count of 4; it
+                // leaves exerciseDuration at 18, so the next tick continues
+                // the countdown at 3.
+                settingsModule.settings.exerciseDuration = 19;
+                performExerciseStep(19);
+            }
             actionsModule.startExercise();
             return;
         }

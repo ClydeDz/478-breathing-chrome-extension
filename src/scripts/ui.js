@@ -58,6 +58,10 @@ export const getRoundDropdownValue = () => {
     return jQuery("#roundsSelection").val();
 }
 
+export const getPauseBetweenRoundsValue = () => {
+    return jQuery("#pauseBetweenRounds").prop("checked");
+}
+
 export const resetRoundDropdownValue = () => {
     jQuery("#roundsSelection").val("1");
 }
