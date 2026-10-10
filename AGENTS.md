@@ -11,25 +11,32 @@ exercise**: inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds, for 
 user-selected number of rounds.
 
 - Purely client-side: no backend, no framework. Vanilla ES modules + jQuery for DOM,
-  SCSS for styles, webpack 5 for bundling, Jest 27 for tests.
+  SCSS for styles, webpack 5 for bundling, Jest 27 for tests, and Prettier for
+  formatting.
 - jQuery is a runtime dependency; everything else in `dependencies`/`devDependencies`
   is build tooling.
 
 ## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm ci` | Clean install (package-lock.json is lockfileVersion 3, needs npm ≥7) |
-| `npm test` | Run Jest once (works on modern Node, e.g. v22) |
-| `npm run test:ci` | What CI runs: `--coverage --ci --testResultsProcessor=jest-junit --watchAll=false` (writes `junit.xml`, `coverage/`, both gitignored) |
-| `npm run build` | Webpack in watch mode (development) |
-| `npm run build:prod` | Production build → `dist/` (this is what ships) |
+| Command              | Purpose                                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm ci`             | Clean install (package-lock.json is lockfileVersion 3, needs npm ≥7)                                                                  |
+| `npm run lint`       | Check formatting with Prettier                                                                                                        |
+| `npm run lint:fix`   | Format supported files with Prettier                                                                                                  |
+| `npm test`           | Run Jest once (works on modern Node, e.g. v22)                                                                                        |
+| `npm run test:ci`    | What CI runs: `--coverage --ci --testResultsProcessor=jest-junit --watchAll=false` (writes `junit.xml`, `coverage/`, both gitignored) |
+| `npm run build`      | Webpack in watch mode (development)                                                                                                   |
+| `npm run build:prod` | Production build → `dist/` (this is what ships)                                                                                       |
 
 Build outputs to `dist/` (gitignored): `bundle.js`, `index.css`, plus copies of
 `index.html`, `manifest.json`, `icons/`, `fonts/`, `audio/` (subdirectory structure
 is preserved by CopyWebpackPlugin — see `webpack.config.js`). To try the extension:
 `npm run build:prod`, then load `dist/` as an unpacked extension at
 `chrome://extensions`.
+
+Prettier formatting is configured by the `lint` and `lint:fix` scripts in
+`package.json`. `.prettierignore` excludes dependencies, generated build files,
+coverage output, and Git metadata.
 
 ## Building on modern Node (and CI)
 
@@ -71,7 +78,7 @@ with `audio.js` as a leaf module (imports nothing from the project).
 - `exercise.js` — `performExerciseStep(duration)`, the per-second state machine.
 - `settings.js` — mutable global `settings` object + `intervalTimer` + `resetExercise()` /
   `clearExerciseInterval()`. NOTE: `startExercise()` assigns the timer id to the module
-  *namespace* (`settingsModule.intervalTimer`), which the local `intervalTimer` never
+  _namespace_ (`settingsModule.intervalTimer`), which the local `intervalTimer` never
   sees — so `clearExerciseInterval(timerId)` relies on callers passing that id (as
   `exercise.js` and `switchToHomeMode()` do); its no-arg default still falls back to the
   local variable (always `0` — this is the pinned `settings.test.js` TODO).
@@ -81,15 +88,15 @@ with `audio.js` as a leaf module (imports nothing from the project).
 
 `settings.exerciseDuration` counts **22 → 0**, one step per 1000 ms interval tick:
 
-| duration | screen | audio (when enabled) |
-| --- | --- | --- |
-| 22 | "Ready" | **`lets-begin` on round 1 only** (warms up audio before the first beep); rounds 2+ are silent and only reach this duration when the pause is on |
-| 21 | "Steady" | **silent** |
-| 20 | "Go" | **silent** |
-| 19–16 | Inhale, countdown 4→1 | spoken "inhale" once at 19 + **`inhale-beep` on every tick** |
-| 15–9 | Hold, countdown 7→1 | spoken "hold" once at 15 + **`hold-beep` on every tick** |
-| 8–1 | Exhale, countdown 8→1 | spoken "exhale" once at 8 + **`exhale-beep` on every tick** |
-| 0 | round ends: `currentRound++`, interval cleared, exercise reset; if more rounds follow: **pause on** → round-complete screen, **pause off (default)** → the same tick runs `performExerciseStep(19)`, so the next round's inhale starts immediately | **pause on** → `next-round` when another round follows; **pause off (default)** → the next round's `inhale` cue + `inhale-beep` instead; last round → **`complete`** (played *after* `switchToExerciseCompleteMode()`, which stops lingering audio) |
+| duration | screen                                                                                                                                                                                                                                             | audio (when enabled)                                                                                                                                                                                                                                |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 22       | "Ready"                                                                                                                                                                                                                                            | **`lets-begin` on round 1 only** (warms up audio before the first beep); rounds 2+ are silent and only reach this duration when the pause is on                                                                                                     |
+| 21       | "Steady"                                                                                                                                                                                                                                           | **silent**                                                                                                                                                                                                                                          |
+| 20       | "Go"                                                                                                                                                                                                                                               | **silent**                                                                                                                                                                                                                                          |
+| 19–16    | Inhale, countdown 4→1                                                                                                                                                                                                                              | spoken "inhale" once at 19 + **`inhale-beep` on every tick**                                                                                                                                                                                        |
+| 15–9     | Hold, countdown 7→1                                                                                                                                                                                                                                | spoken "hold" once at 15 + **`hold-beep` on every tick**                                                                                                                                                                                            |
+| 8–1      | Exhale, countdown 8→1                                                                                                                                                                                                                              | spoken "exhale" once at 8 + **`exhale-beep` on every tick**                                                                                                                                                                                         |
+| 0        | round ends: `currentRound++`, interval cleared, exercise reset; if more rounds follow: **pause on** → round-complete screen, **pause off (default)** → the same tick runs `performExerciseStep(19)`, so the next round's inhale starts immediately | **pause on** → `next-round` when another round follows; **pause off (default)** → the next round's `inhale` cue + `inhale-beep` instead; last round → **`complete`** (played _after_ `switchToExerciseCompleteMode()`, which stops lingering audio) |
 
 Gotchas:
 
@@ -97,7 +104,7 @@ Gotchas:
   `resetExercise()` restores them (4/7/8 and duration 22).
 - The "Add pause between rounds" checkbox (`#pauseBetweenRounds`, **unchecked by
   default**) is read into `settings.pauseBetweenRounds` once, in
-  `switchToExerciseInProgressMode()`, and is intentionally *not* reset when going
+  `switchToExerciseInProgressMode()`, and is intentionally _not_ reset when going
   home or completing. With it off, `performExerciseStep(0)` sets
   `exerciseDuration = 19` and then recurses into `performExerciseStep(19)` in the
   same tick: that step owns the "inhale" cue and the first count of 4, and its
@@ -144,7 +151,7 @@ code fails the suite.
 
 ## Testing conventions & gotchas
 
-5 suites / 99 tests, all green as of 2026-10-09 (`src/tests/*.test.js`).
+6 suites / 100 tests, all green as of 2026-10-10 (`src/tests/*.test.js`).
 
 - Jest runs in the **node** environment — there is no DOM. `ui.test.js` injects
   `src/tests/mocks/jqueryMock.js` through `uiModule.initializeJQuery()`.
@@ -158,7 +165,7 @@ code fails the suite.
 - `settings.test.js` has a known `// TODO: Explore why this value is 0` around
   `clearInterval` under fake timers — pre-existing, not a regression.
 - When adding UI wiring: assert both the DOM selector and the exact text set, and
-  assert *absence* of side effects for out-of-bounds/no-audio paths (existing tests
+  assert _absence_ of side effects for out-of-bounds/no-audio paths (existing tests
   do this).
 
 ## Repo conventions (from `docs/CONTRIBUTING.md`)
@@ -174,9 +181,10 @@ code fails the suite.
   bump CI's Node version (16+, ideally 18; the toolchain — webpack `xxhash64`, dart-sass
   1.60, Jest 27 — all support modern Node now, verified on Node 22). Note that npm 7+
   enforces peer deps, so a CI bump relies on the project `.npmrc` above.
-- CI on push/PR to `main`: `npm ci` → `npm run build:prod` → `npm run test:ci` →
-  uploads `dist/` artifact; pushes to `main` also publish to the Chrome Web Store
-  (secrets required). Docs/markdown changes don't trigger it (`paths-ignore`).
+- CI on push/PR to `main`: `npm ci` → `npm run lint` → `npm run build:prod` →
+  `npm run test:ci` → uploads `dist/` artifact; pushes to `main` also publish to
+  the Chrome Web Store (secrets required). Docs/markdown changes don't trigger it
+  (`paths-ignore`).
 
 ## Smoke-testing the built page (headless Chrome)
 

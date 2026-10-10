@@ -4,145 +4,161 @@ import * as settingsModule from "../scripts/settings";
 import * as exerciseModule from "../scripts/exercise";
 import * as audioModule from "../scripts/audio";
 
-const updateActionSpy = jest.spyOn(uiModule, "updateAction")
-    .mockImplementation(jest.fn());
-const updateCountdownSpy = jest.spyOn(uiModule, "updateCountdown")
-    .mockImplementation(jest.fn());
-const updateTitleSpy = jest.spyOn(uiModule, "updateTitle")
-    .mockImplementation(jest.fn());
-const resetRoundDropdownValueSpy = jest.spyOn(uiModule, "resetRoundDropdownValue")
-    .mockImplementation(jest.fn());
-const toggleHomeVisibilitySpy = jest.spyOn(uiModule, "toggleHomeVisibility")
-    .mockImplementation(jest.fn());
-const toggleExerciseInProgressVisibilitySpy = jest.spyOn(uiModule, "toggleExerciseInProgressVisibility")
-    .mockImplementation(jest.fn());
-const toggleExerciseCompleteVisibilitySpy = jest.spyOn(uiModule, "toggleExerciseCompleteVisibility")
-    .mockImplementation(jest.fn());
-const getRoundDropdownValueSpy = jest.spyOn(uiModule, "getRoundDropdownValue")
-    .mockImplementation(jest.fn());
-const getPauseBetweenRoundsValueSpy = jest.spyOn(uiModule, "getPauseBetweenRoundsValue")
-    .mockImplementation(jest.fn());
+const updateActionSpy = jest
+  .spyOn(uiModule, "updateAction")
+  .mockImplementation(jest.fn());
+const updateCountdownSpy = jest
+  .spyOn(uiModule, "updateCountdown")
+  .mockImplementation(jest.fn());
+const updateTitleSpy = jest
+  .spyOn(uiModule, "updateTitle")
+  .mockImplementation(jest.fn());
+const resetRoundDropdownValueSpy = jest
+  .spyOn(uiModule, "resetRoundDropdownValue")
+  .mockImplementation(jest.fn());
+const toggleHomeVisibilitySpy = jest
+  .spyOn(uiModule, "toggleHomeVisibility")
+  .mockImplementation(jest.fn());
+const toggleExerciseInProgressVisibilitySpy = jest
+  .spyOn(uiModule, "toggleExerciseInProgressVisibility")
+  .mockImplementation(jest.fn());
+const toggleExerciseCompleteVisibilitySpy = jest
+  .spyOn(uiModule, "toggleExerciseCompleteVisibility")
+  .mockImplementation(jest.fn());
+const getRoundDropdownValueSpy = jest
+  .spyOn(uiModule, "getRoundDropdownValue")
+  .mockImplementation(jest.fn());
+const getPauseBetweenRoundsValueSpy = jest
+  .spyOn(uiModule, "getPauseBetweenRoundsValue")
+  .mockImplementation(jest.fn());
 
-const clearExerciseIntervalSpy = jest.spyOn(settingsModule, "clearExerciseInterval")
-    .mockImplementation(jest.fn());
-const resetExerciseSpy = jest.spyOn(settingsModule, "resetExercise")
-    .mockImplementation(jest.fn());
+const clearExerciseIntervalSpy = jest
+  .spyOn(settingsModule, "clearExerciseInterval")
+  .mockImplementation(jest.fn());
+const resetExerciseSpy = jest
+  .spyOn(settingsModule, "resetExercise")
+  .mockImplementation(jest.fn());
 
-const performExerciseStepSpy = jest.spyOn(exerciseModule, "performExerciseStep")
-    .mockImplementation(jest.fn());
-const stopAllAudioSpy = jest.spyOn(audioModule, "stopAllAudio")
-    .mockImplementation(jest.fn());
+const performExerciseStepSpy = jest
+  .spyOn(exerciseModule, "performExerciseStep")
+  .mockImplementation(jest.fn());
+const stopAllAudioSpy = jest
+  .spyOn(audioModule, "stopAllAudio")
+  .mockImplementation(jest.fn());
 
-describe("actions → switchToExerciseCompleteMode()", () => {    
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+describe("actions → switchToExerciseCompleteMode()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("updates required ui elements", () => {
-        actionsModule.switchToExerciseCompleteMode();
-        
-        expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    
-        expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);    
-        expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(true);    
-        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();        expect(updateActionSpy).toHaveBeenCalledWith(""); 
-        expect(updateCountdownSpy).toHaveBeenCalledWith(""); 
-        expect(updateTitleSpy).toHaveBeenCalledWith(""); 
-        expect(stopAllAudioSpy).toHaveBeenCalled(); 
-    });
+  test("updates required ui elements", () => {
+    actionsModule.switchToExerciseCompleteMode();
+
+    expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);
+    expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);
+    expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(true);
+    expect(resetRoundDropdownValueSpy).toHaveBeenCalled();
+    expect(updateActionSpy).toHaveBeenCalledWith("");
+    expect(updateCountdownSpy).toHaveBeenCalledWith("");
+    expect(updateTitleSpy).toHaveBeenCalledWith("");
+    expect(stopAllAudioSpy).toHaveBeenCalled();
+  });
 });
 
-describe("actions → switchToRoundCompleteMode()", () => {    
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+describe("actions → switchToRoundCompleteMode()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("updates required ui elements", () => {
-        settingsModule.settings.currentRound = 1;
+  test("updates required ui elements", () => {
+    settingsModule.settings.currentRound = 1;
 
-        actionsModule.switchToRoundCompleteMode();
+    actionsModule.switchToRoundCompleteMode();
 
-        expect(updateActionSpy).toHaveBeenCalledWith(`Round 1`);    
-        expect(updateCountdownSpy).toHaveBeenCalledWith("");    
-        expect(updateTitleSpy).toHaveBeenCalledWith("");    
-    });
+    expect(updateActionSpy).toHaveBeenCalledWith(`Round 1`);
+    expect(updateCountdownSpy).toHaveBeenCalledWith("");
+    expect(updateTitleSpy).toHaveBeenCalledWith("");
+  });
 });
 
-describe("actions → switchToExerciseInProgressMode()", () => {    
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+describe("actions → switchToExerciseInProgressMode()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("updates required ui elements", () => {
-        getRoundDropdownValueSpy.mockReturnValue(5);
-        getPauseBetweenRoundsValueSpy.mockReturnValue(true);
-        
-        actionsModule.switchToExerciseInProgressMode();
+  test("updates required ui elements", () => {
+    getRoundDropdownValueSpy.mockReturnValue(5);
+    getPauseBetweenRoundsValueSpy.mockReturnValue(true);
 
-        expect(getPauseBetweenRoundsValueSpy).toHaveBeenCalled();
-        expect(settingsModule.settings.pauseBetweenRounds).toBe(true);
-        
-        expect(getRoundDropdownValueSpy).toHaveBeenCalled();    
-        expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);    
-        expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(true);    
-        expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(false);    
+    actionsModule.switchToExerciseInProgressMode();
 
-        expect(updateActionSpy).not.toHaveBeenCalled();    
-        expect(updateCountdownSpy).not.toHaveBeenCalled();
-        expect(updateTitleSpy).not.toHaveBeenCalled();
-    });
+    expect(getPauseBetweenRoundsValueSpy).toHaveBeenCalled();
+    expect(settingsModule.settings.pauseBetweenRounds).toBe(true);
+
+    expect(getRoundDropdownValueSpy).toHaveBeenCalled();
+    expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(false);
+    expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(true);
+    expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(false);
+
+    expect(updateActionSpy).not.toHaveBeenCalled();
+    expect(updateCountdownSpy).not.toHaveBeenCalled();
+    expect(updateTitleSpy).not.toHaveBeenCalled();
+  });
 });
 
-describe("actions → switchToHomeMode()", () => {    
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+describe("actions → switchToHomeMode()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("updates required ui elements", () => {
-        actionsModule.switchToHomeMode();
-        
-        expect(settingsModule.settings.currentRound).toBe(1);
-        expect(clearExerciseIntervalSpy).toHaveBeenCalled();
-        expect(resetExerciseSpy).toHaveBeenCalled();
+  test("updates required ui elements", () => {
+    actionsModule.switchToHomeMode();
 
-        expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(true);    
-        expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);
-        expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(false);
-        expect(resetRoundDropdownValueSpy).toHaveBeenCalled();        expect(updateActionSpy).toHaveBeenCalledWith(""); 
-        expect(updateCountdownSpy).toHaveBeenCalledWith(""); 
-        expect(updateTitleSpy).toHaveBeenCalledWith("");  
-        expect(stopAllAudioSpy).toHaveBeenCalled(); 
-    });
+    expect(settingsModule.settings.currentRound).toBe(1);
+    expect(clearExerciseIntervalSpy).toHaveBeenCalled();
+    expect(resetExerciseSpy).toHaveBeenCalled();
+
+    expect(toggleHomeVisibilitySpy).toHaveBeenCalledWith(true);
+    expect(toggleExerciseInProgressVisibilitySpy).toHaveBeenCalledWith(false);
+    expect(toggleExerciseCompleteVisibilitySpy).toHaveBeenCalledWith(false);
+    expect(resetRoundDropdownValueSpy).toHaveBeenCalled();
+    expect(updateActionSpy).toHaveBeenCalledWith("");
+    expect(updateCountdownSpy).toHaveBeenCalledWith("");
+    expect(updateTitleSpy).toHaveBeenCalledWith("");
+    expect(stopAllAudioSpy).toHaveBeenCalled();
+  });
 });
 
-describe("actions → startExercise()", () => {    
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+describe("actions → startExercise()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("updates required ui elements", () => {
-        settingsModule.settings.rounds = 5;        
-        const interval = settingsModule.settings.interval;
-        jest.useFakeTimers();
-        jest.spyOn(global, "setInterval");
+  test("updates required ui elements", () => {
+    settingsModule.settings.rounds = 5;
+    const interval = settingsModule.settings.interval;
+    jest.useFakeTimers();
+    jest.spyOn(global, "setInterval");
 
-        actionsModule.startExercise();        
-        
-        expect(setInterval).toHaveBeenCalledWith(actionsModule.startExerciseIntervalFunction, interval);
-    });
+    actionsModule.startExercise();
+
+    expect(setInterval).toHaveBeenCalledWith(
+      actionsModule.startExerciseIntervalFunction,
+      interval,
+    );
+  });
 });
 
+describe("actions → startExerciseIntervalFunction()", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-describe("actions → startExerciseIntervalFunction()", () => {    
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+  test("updates required ui elements", () => {
+    const duration = settingsModule.settings.exerciseDuration;
 
-    test("updates required ui elements", () => {
-        const duration = settingsModule.settings.exerciseDuration;
+    actionsModule.startExerciseIntervalFunction();
 
-        actionsModule.startExerciseIntervalFunction();
-
-        expect(performExerciseStepSpy).toHaveBeenCalledWith(duration);  
-    });
+    expect(performExerciseStepSpy).toHaveBeenCalledWith(duration);
+  });
 });
-

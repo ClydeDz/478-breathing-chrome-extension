@@ -1,94 +1,79 @@
 @import "./variables";
 
-@keyframes swing
-{
-    15%
-    {
-        -webkit-transform: translateX(5px);
-        transform: translateX(5px);
-    }
-    30%
-    {
-        -webkit-transform: translateX(-5px);
-        transform: translateX(-5px);
-    }
-    50%
-    {
-        -webkit-transform: translateX(3px);
-        transform: translateX(3px);
-    }
-    65%
-    {
-        -webkit-transform: translateX(-3px);
-        transform: translateX(-3px);
-    }
-    80%
-    {
-        -webkit-transform: translateX(2px);
-        transform: translateX(2px);
-    }
-    100%
-    {
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-    }
+@keyframes swing {
+  15% {
+    -webkit-transform: translateX(5px);
+    transform: translateX(5px);
+  }
+  30% {
+    -webkit-transform: translateX(-5px);
+    transform: translateX(-5px);
+  }
+  50% {
+    -webkit-transform: translateX(3px);
+    transform: translateX(3px);
+  }
+  65% {
+    -webkit-transform: translateX(-3px);
+    transform: translateX(-3px);
+  }
+  80% {
+    -webkit-transform: translateX(2px);
+    transform: translateX(2px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 100%, 0);
-    }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
 
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+  from {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 .animation {
-    &-swing {
-        &:hover {
-            animation-name: swing; 
-        }        
+  &-swing {
+    &:hover {
+      animation-name: swing;
     }
-    
-    &-fadeIn {
-        animation-name: fadeIn;
-    }
-    
-    &-fadeInUp {
-        animation-name: fadeInUp;
-    }
-    
-    &-duration {
-        animation-duration: $animation-duration;
+  }
 
-        &-slow {
-            animation-duration: $animation-duration-slow;
-        }
+  &-fadeIn {
+    animation-name: fadeIn;
+  }
+
+  &-fadeInUp {
+    animation-name: fadeInUp;
+  }
+
+  &-duration {
+    animation-duration: $animation-duration;
+
+    &-slow {
+      animation-duration: $animation-duration-slow;
     }
-    &-iteration {
-        &-infinite {
-            animation-iteration-count: infinite;
-        }
+  }
+  &-iteration {
+    &-infinite {
+      animation-iteration-count: infinite;
     }
+  }
 }
-
-
-
-
-  
-  
-
- 

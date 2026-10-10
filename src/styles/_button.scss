@@ -1,20 +1,20 @@
 @import "./variables";
 
 button {
-    background-color: $velvet;
-    color: $skin;
-    padding: 9px 32px;
-    outline: none;
-    border: 0;
-    margin: 4px;
-    font-size: $font-size-large;
-    letter-spacing: 1.5px;
-    transition: background-color 0.8s;
-    font-family: $font-family-heading;
-    border-radius: 30px;
+  background-color: $velvet;
+  color: $skin;
+  padding: 9px 32px;
+  outline: none;
+  border: 0;
+  margin: 4px;
+  font-size: $font-size-large;
+  letter-spacing: 1.5px;
+  transition: background-color 0.8s;
+  font-family: $font-family-heading;
+  border-radius: 30px;
 
-    &:hover {
-        background-color: $teal;        
-        cursor: pointer;
-    }
+  &:hover {
+    background-color: $teal;
+    cursor: pointer;
+  }
 }

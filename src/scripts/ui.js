@@ -3,84 +3,90 @@ import * as audioModule from "./audio";
 var jQuery;
 
 export const initializeJQuery = (jQueryInstance) => {
-    jQuery = jQueryInstance;
-}
+  jQuery = jQueryInstance;
+};
 
 export const startButtonTrigger = () => {
-    actionsModule.switchToExerciseInProgressMode();
-    actionsModule.startExercise();
-}
+  actionsModule.switchToExerciseInProgressMode();
+  actionsModule.startExercise();
+};
 
 export const completeButtonTrigger = () => {
-    actionsModule.switchToHomeMode();
-}
+  actionsModule.switchToHomeMode();
+};
 
 export const audioButtonTrigger = () => {
-    const audioEnabled = audioModule.toggleAudio();
-    updateAudioButton(audioEnabled);
-}
+  const audioEnabled = audioModule.toggleAudio();
+  updateAudioButton(audioEnabled);
+};
 
 export const initTriggers = () => {
-    jQuery("#start").on("click", startButtonTrigger);
-    jQuery("#exerciseEnd, #exerciseCompleteToHome").on("click", completeButtonTrigger);
-    jQuery("#audioToggle").on("click", audioButtonTrigger);
-}
+  jQuery("#start").on("click", startButtonTrigger);
+  jQuery("#exerciseEnd, #exerciseCompleteToHome").on(
+    "click",
+    completeButtonTrigger,
+  );
+  jQuery("#audioToggle").on("click", audioButtonTrigger);
+};
 
 function updateElementText(element, text) {
-    element.text(text);
+  element.text(text);
 }
 
 export const updateAction = (value) => {
-    updateElementText(jQuery("#exerciseAction"), value);
-}
+  updateElementText(jQuery("#exerciseAction"), value);
+};
 
 export const updateCountdown = (value) => {
-    updateElementText(jQuery("#exerciseCountdown"), value);
-}
+  updateElementText(jQuery("#exerciseCountdown"), value);
+};
 
 export const updateTitle = (value) => {
-    updateElementText(jQuery("#exerciseTitle"), value);
-}
+  updateElementText(jQuery("#exerciseTitle"), value);
+};
 
 export const updateAudioButton = (enabled) => {
-    updateElementText(jQuery("#audioToggle"), enabled ? "\ud83d\udd0a Sound on" : "\ud83d\udd07 Sound off");
-}
+  updateElementText(
+    jQuery("#audioToggle"),
+    enabled ? "\ud83d\udd0a Sound on" : "\ud83d\udd07 Sound off",
+  );
+};
 
 function toggleClass(element, className) {
-    jQuery(element).toggleClass(className);
+  jQuery(element).toggleClass(className);
 }
 
 export const toggleCountdownClass = () => {
-    toggleClass("#exerciseCountdown", "animation-iteration-infinite");
-}
+  toggleClass("#exerciseCountdown", "animation-iteration-infinite");
+};
 
 export const getRoundDropdownValue = () => {
-    return jQuery("#roundsSelection").val();
-}
+  return jQuery("#roundsSelection").val();
+};
 
 export const getPauseBetweenRoundsValue = () => {
-    return jQuery("#pauseBetweenRounds").prop("checked");
-}
+  return jQuery("#pauseBetweenRounds").prop("checked");
+};
 
 export const resetRoundDropdownValue = () => {
-    jQuery("#roundsSelection").val("1");
-}
+  jQuery("#roundsSelection").val("1");
+};
 
 function toggleElementVisibility(element, showComponent) {
-    showComponent ? element.show(): element.hide();
+  showComponent ? element.show() : element.hide();
 }
 
 export const toggleHomeVisibility = (showComponent) => {
-    const element = jQuery("#home");
-    toggleElementVisibility(element, showComponent);
-}
+  const element = jQuery("#home");
+  toggleElementVisibility(element, showComponent);
+};
 
 export const toggleExerciseInProgressVisibility = (showComponent) => {
-    const element = jQuery("#exerciseInProgress");
-    toggleElementVisibility(element, showComponent);
-}
+  const element = jQuery("#exerciseInProgress");
+  toggleElementVisibility(element, showComponent);
+};
 
 export const toggleExerciseCompleteVisibility = (showComponent) => {
-    const element = jQuery("#exerciseComplete");
-    toggleElementVisibility(element, showComponent);
-}
+  const element = jQuery("#exerciseComplete");
+  toggleElementVisibility(element, showComponent);
+};
