@@ -1,61 +1,101 @@
 <!-- (c) 2021 Clyde D'Souza -->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>4-7-8 Breathing – An Exercise Ready in Every New Tab</title>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
-        <meta name="description" content="A 4-7-8 breathing exercise ready in every new tab. Relieves stress, reduces anxiety and calms the nerves." />
-        <script src="./bundle.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="./index.css">
-    </head>
-    <body>
-        <button id="audioToggle">🔇 Sound off</button>
-        <div class="container">
-            <div id="home" class="animation-fadeIn animation-duration-slow">
-                <img src="./icons/plectrum.png" alt="home" width="100" />
-                <h1>4-7-8 breathing</h1>
-                <p>Inhale for <b>4</b> seconds, hold for <b>7</b> seconds and exhale for <b>8</b> seconds. <br />
-                    Relieves stress, reduces anxiety and calms the nerves.</p>
-                <select id="roundsSelection">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-                round(s)
-                <label class="pause-option" for="pauseBetweenRounds">
-                    <input type="checkbox" id="pauseBetweenRounds" />
-                    Add pause between rounds
-                </label>
-                <br/>
-                <button id="start" class="animation-swing animation-duration">Start</button>
-            </div>
-            <div id="exerciseInProgress">
-                <span id="exerciseEnd" class="close-icon"></span>
-                <p id="exerciseTitle" class="animation-fadeIn"></p>
-                <p id="exerciseAction"></p>
-                <p id="exerciseCountdown" class="animation-fadeIn animation-duration animation-iteration-infinite"></p>
-            </div>
-            <div id="exerciseComplete" class="animation-fadeInUp animation-duration-slow">
-                <p>Exercise complete!</p>
-                <button id="exerciseCompleteToHome" class="animation-swing animation-duration">Back to home</button>
-            </div>
-        </div>        
-        <footer class="animation-fadeIn animation-duration-slow">
-            <a href="https://github.com/ClydeDz/478-breathing-chrome-extension/blob/main/docs/README.md" target="_blank" rel="noreferrer">
-                About</a>&nbsp;●&nbsp;
-            <a href="https://github.com/ClydeDz/478-breathing-chrome-extension/issues/new/choose" target="_blank" rel="noreferrer">
-                Have an idea?</a>&nbsp;●&nbsp; 
-            <a href="https://github.com/ClydeDz/478-breathing-chrome-extension/issues/new/choose" target="_blank" rel="noreferrer">
-                Report an issue</a>&nbsp;●&nbsp; 
-            <a href="https://sponsor.clydedsouza.net/" target="_blank" rel="noreferrer">
-                Support</a>&nbsp;●&nbsp; 
-            Developed by <a href="https://clydedsouza.net" target="_blank" rel="noreferrer">
-                Clyde D'Souza</a>
-        </footer>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <title>4-7-8 Breathing – An Exercise Ready in Every New Tab</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <meta
+      name="description"
+      content="A 4-7-8 breathing exercise ready in every new tab. Relieves stress, reduces anxiety and calms the nerves."
+    />
+    <script src="./bundle.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <button id="audioToggle">🔇 Sound off</button>
+    <div class="container">
+      <div id="home" class="animation-fadeIn animation-duration-slow">
+        <img src="./icons/plectrum.png" alt="home" width="100" />
+        <h1>4-7-8 breathing</h1>
+        <p>
+          Inhale for <b>4</b> seconds, hold for <b>7</b> seconds and exhale for
+          <b>8</b> seconds. <br />
+          Relieves stress, reduces anxiety and calms the nerves.
+        </p>
+        <select id="roundsSelection">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+        round(s)
+        <label class="pause-option" for="pauseBetweenRounds">
+          <input type="checkbox" id="pauseBetweenRounds" />
+          Add pause between rounds
+        </label>
+        <br />
+        <button id="start" class="animation-swing animation-duration">
+          Start
+        </button>
+      </div>
+      <div id="exerciseInProgress">
+        <span id="exerciseEnd" class="close-icon"></span>
+        <p id="exerciseTitle" class="animation-fadeIn"></p>
+        <p id="exerciseAction"></p>
+        <p
+          id="exerciseCountdown"
+          class="animation-fadeIn animation-duration animation-iteration-infinite"
+        ></p>
+      </div>
+      <div
+        id="exerciseComplete"
+        class="animation-fadeInUp animation-duration-slow"
+      >
+        <p>Exercise complete!</p>
+        <button
+          id="exerciseCompleteToHome"
+          class="animation-swing animation-duration"
+        >
+          Back to home
+        </button>
+      </div>
+    </div>
+    <footer class="animation-fadeIn animation-duration-slow">
+      <a
+        href="https://github.com/ClydeDz/478-breathing-chrome-extension/blob/main/docs/README.md"
+        target="_blank"
+        rel="noreferrer"
+      >
+        About</a
+      >&nbsp;●&nbsp;
+      <a
+        href="https://github.com/ClydeDz/478-breathing-chrome-extension/issues/new/choose"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Have an idea?</a
+      >&nbsp;●&nbsp;
+      <a
+        href="https://github.com/ClydeDz/478-breathing-chrome-extension/issues/new/choose"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Report an issue</a
+      >&nbsp;●&nbsp;
+      <a
+        href="https://sponsor.clydedsouza.net/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Support</a
+      >&nbsp;●&nbsp; Developed by
+      <a href="https://clydedsouza.net" target="_blank" rel="noreferrer">
+        Clyde D'Souza</a
+      >
+    </footer>
+  </body>
 </html>

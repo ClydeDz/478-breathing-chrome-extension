@@ -1,3 +1,10 @@
 github: [clydedz]
 ko_fi: clydedsouza
-custom: ["https://sponsor.clydedsouza.net/", "https://www.paypal.com/donate?hosted_button_id=ZGAZG5857A864"]
+buy_me_a_coffee: clydedsouza
+custom:
+  [
+    "https://sponsor.clydedsouza.net/",
+    "https://donate.stripe.com/dRmfZggGd02Oa7dejP0kE00",
+    "https://paypal.me/clydedz",
+    "https://www.revolut.me/clydedz/",
+  ]

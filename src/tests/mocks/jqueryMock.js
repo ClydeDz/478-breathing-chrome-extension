@@ -1,17 +1,21 @@
 export const text = jest.fn();
-export const val = jest.fn(() => {return 3;});
+export const val = jest.fn(() => {
+  return 3;
+});
 export const hide = jest.fn();
 export const show = jest.fn();
 export const on = jest.fn();
 export const toggleClass = jest.fn();
-export const prop = jest.fn(() => {return false;});
+export const prop = jest.fn(() => {
+  return false;
+});
 
 export const jQuery = jest.fn(() => ({
-    text,
-    val,
-    hide,
-    show,
-    on,
-    toggleClass,
-    prop
+  text,
+  val,
+  hide,
+  show,
+  on,
+  toggleClass,
+  prop,
 }));

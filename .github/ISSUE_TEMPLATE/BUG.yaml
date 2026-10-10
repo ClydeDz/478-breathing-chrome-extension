@@ -20,18 +20,18 @@ body:
     attributes:
       label: Please elaborate the steps to reproduce the issue
     validations:
-      required: true   
+      required: true
   - type: input
     id: browser
     attributes:
       label: Browser information
       placeholder: ex. Chrome version 79.2.1
     validations:
-      required: true   
+      required: true
   - type: input
     id: extension
     attributes:
       label: Extension version
       placeholder: ex. 478 Breathing version 1.0.0
     validations:
-      required: true  
+      required: true

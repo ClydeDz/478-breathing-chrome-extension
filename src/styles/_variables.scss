@@ -3,14 +3,14 @@ $velvet: #6c7697;
 $teal: #4c776d;
 
 @font-face {
-    font-family: AsapRegular;
-    src: url("fonts/Asap-Regular.otf") format("opentype");
+  font-family: AsapRegular;
+  src: url("fonts/Asap-Regular.otf") format("opentype");
 }
 
 @font-face {
-    font-family: AsapBold;
-    font-weight: bold;
-    src: url("fonts/Asap-Bold.otf") format("opentype");
+  font-family: AsapBold;
+  font-weight: bold;
+  src: url("fonts/Asap-Bold.otf") format("opentype");
 }
 
 $font-size-small: calc(10px + 0.8vw);

@@ -1,15 +1,19 @@
 ## What has changed and why?
+
 (Insert description here)
 
-## Does this fix an open issue? 
+## Does this fix an open issue?
+
 (If yes, please mention the number here)
 
-## Type of change   
+## Type of change
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 
-## Checklist  
+## Checklist
+
 - [ ] I have followed the [`CONTRIBUTING` document](https://github.com/ClydeDz/478-breathing-chrome-extension/blob/main/docs/CONTRIBUTING.md) and have updated the required files.
 - [ ] My code follows the code style of this project.
 - [ ] All new and existing tests passed.

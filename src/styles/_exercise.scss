@@ -2,45 +2,45 @@
 
 #exerciseInProgress,
 #exerciseComplete {
-    display: none;
+  display: none;
 }
 
 #exerciseEnd {
-    position: absolute;
-    top: 0;
-    right: 20px;
-    font-size: $font-size-xlarge;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 20px;
+  font-size: $font-size-xlarge;
+  cursor: pointer;
 }
 
 #exerciseTitle {
-    font-size: medium;
-    &::after {
-        content: '\00a0';
-    }
+  font-size: medium;
+  &::after {
+    content: "\00a0";
+  }
 }
 
-#exerciseAction, 
+#exerciseAction,
 #exerciseCountdown {
-    padding: 0;
-    margin-block-start: 0;
-    margin-block-end: 0;
+  padding: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 #exerciseAction {
-    text-transform: uppercase;
-    letter-spacing: 11.5px;
-    font-size: $font-size-large;
-    font-family: $font-family-heading;
+  text-transform: uppercase;
+  letter-spacing: 11.5px;
+  font-size: $font-size-large;
+  font-family: $font-family-heading;
 }
 
 #exerciseComplete {
-    p {
-        font-size: $font-size-large;
-    }
+  p {
+    font-size: $font-size-large;
+  }
 }
 
 #exerciseCountdown {
-    font-size: $font-size-xxlarge;
-    font-weight: 500;
+  font-size: $font-size-xxlarge;
+  font-weight: 500;
 }

@@ -8,55 +8,67 @@ module.exports = {
     filename: "bundle.js",
     // "xxhash64" instead of the default "md4": md4 goes through OpenSSL, which
     // Node 17+ (OpenSSL 3) no longer provides, so md4 breaks builds on modern Node.
-    hashFunction: "xxhash64"
+    hashFunction: "xxhash64",
   },
   module: {
-		rules: [
-			{
-				test: /\.scss$/,
-				use: [
-					{
-						loader: "file-loader",
-						options: {
-							name: "[name].css",
-						}
-					},
-					{
-						loader: "extract-loader"
-					},
-					{
-						loader: "css-loader?-url"
-					},
-					{
-						loader: "postcss-loader"
-					},
-					{
-						loader: "sass-loader"
-					}
-				]
-			},
-			{
-				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
-				use: {
-						loader: "babel-loader",
-						options: {
-						presets: ["@babel/preset-env"],
-						plugins: ["@babel/plugin-transform-runtime"]
-					}
-				}
-			}
-		]
-	},
-  	plugins: [
-		new CopyWebpackPlugin({
-		patterns: [
-			{ from: "./src/index.html" },
-			{ from: "./src/manifest.json" },
-			{ from: "icons/*", to: path.resolve(__dirname, "dist"), context: "src/" },
-			{ from: "fonts/*", to: path.resolve(__dirname, "dist"), context: "src/" },
-			{ from: "audio/*", to: path.resolve(__dirname, "dist"), context: "src/" }
-		]
-		}),
-	]
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].css",
+            },
+          },
+          {
+            loader: "extract-loader",
+          },
+          {
+            loader: "css-loader?-url",
+          },
+          {
+            loader: "postcss-loader",
+          },
+          {
+            loader: "sass-loader",
+          },
+        ],
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+            plugins: ["@babel/plugin-transform-runtime"],
+          },
+        },
+      },
+    ],
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "./src/index.html" },
+        { from: "./src/manifest.json" },
+        {
+          from: "icons/*",
+          to: path.resolve(__dirname, "dist"),
+          context: "src/",
+        },
+        {
+          from: "fonts/*",
+          to: path.resolve(__dirname, "dist"),
+          context: "src/",
+        },
+        {
+          from: "audio/*",
+          to: path.resolve(__dirname, "dist"),
+          context: "src/",
+        },
+      ],
+    }),
+  ],
 };
