@@ -70,8 +70,11 @@ with `audio.js` as a leaf module (imports nothing from the project).
   which sets the 1-second `setInterval`.
 - `exercise.js` — `performExerciseStep(duration)`, the per-second state machine.
 - `settings.js` — mutable global `settings` object + `intervalTimer` + `resetExercise()` /
-  `clearExerciseInterval()`. NOTE: `clearExerciseInterval()` reads the module-level
-  `intervalTimer`, and `startExercise()` assigns it — always go through the module.
+  `clearExerciseInterval()`. NOTE: `startExercise()` assigns the timer id to the module
+  *namespace* (`settingsModule.intervalTimer`), which the local `intervalTimer` never
+  sees — so `clearExerciseInterval(timerId)` relies on callers passing that id (as
+  `exercise.js` and `switchToHomeMode()` do); its no-arg default still falls back to the
+  local variable (always `0` — this is the pinned `settings.test.js` TODO).
 - `audio.js` — sound cues + on/off toggle (added in v1.2.0, see below).
 
 ### Exercise timing model

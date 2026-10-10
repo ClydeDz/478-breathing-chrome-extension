@@ -18,6 +18,9 @@ export function resetExercise() {
     settings.exerciseDuration = 22;
 }
 
-export function clearExerciseInterval() {
-    clearInterval(intervalTimer);
+// Callers pass the id they stored via the module (startExercise() assigns it
+// through the namespace, which never reaches the local variable below), so
+// clearing uses that id; the local fallback keeps no-arg calls working.
+export function clearExerciseInterval(timerId = intervalTimer) {
+    clearInterval(timerId);
 }

@@ -31,7 +31,7 @@ export function switchToExerciseInProgressMode() {
 
 export function switchToHomeMode() {
     settingsModule.settings.currentRound = 1;
-    settingsModule.clearExerciseInterval();
+    settingsModule.clearExerciseInterval(settingsModule.intervalTimer);
     settingsModule.resetExercise();
     audioModule.stopAllAudio();
     
