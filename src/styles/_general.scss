@@ -47,7 +47,8 @@ a {
 }
   
 select {
-    width: 20%;
+    width: 12%;
+    min-width: 48px;
     height: 40px;
     border-color: $velvet;
     border-style: solid;
@@ -60,6 +61,61 @@ select {
     cursor: pointer;
 }
   
+// Checkbox beside the rounds dropdown. It's unchecked by default, so rounds
+// flow straight from one exhale into the next inhale (issue #6). The native
+// widget is swapped out (`appearance: none`) so the box wears the page palette
+// instead of the OS theme: velvet border like the select, teal fill with a
+// skin-coloured tick when checked — echoing the button hover colours.
+.pause-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 16px;
+    // An input's baseline is its bottom edge, which would drag this label out
+    // of line with "round(s)" and the dropdown — centre it on the row instead.
+    vertical-align: middle;
+    cursor: pointer;
+
+    input {
+        appearance: none;
+        -webkit-appearance: none;
+        // Form controls don't inherit the page font by default (UA gives them a
+        // fixed system font), which would pin every `em` size below to that
+        // constant — inherit so the box scales with the rest of the page.
+        font-size: inherit;
+        box-sizing: border-box;
+        width: 1.25em;
+        height: 1.25em;
+        margin: 0;
+        padding: 0;
+        border: 2px solid $velvet;
+        border-radius: 5px;
+        background-color: $skin;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in, border-color 0.3s ease-in;
+    }
+
+    &:hover input {
+        border-color: $teal;
+    }
+
+    input:checked {
+        background-color: $teal;
+        border-color: $teal;
+        // Tick stroked in $skin (written as %23f6e9c7 — a literal "#" would
+        // turn the rest of the data URI into a fragment and drop the colour).
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.5L5 9L9.5 3.5' fill='none' stroke='%23f6e9c7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 65%;
+    }
+
+    input:focus-visible {
+        outline: 2px solid $teal;
+        outline-offset: 2px;
+    }
+}
+
 .close-icon::after {
     display: inline-block;
     content: "\00d7"; 
@@ -74,6 +130,13 @@ select {
     left: 10px;
     z-index: 1;
     margin: 0;
+    // Fixed content width sized for the longer "Sound off" label (measured at
+    // 6.6em on the narrowest viewport, where the unscaled letter-spacing weighs
+    // in most), so toggling the text never resizes or shifts the button.
+    box-sizing: content-box;
+    width: 6.9em;
+    text-align: left;
+    white-space: nowrap;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: $font-size-small;

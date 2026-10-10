@@ -51,3 +51,13 @@ describe("settings → clearExerciseInterval()", () => {
         expect(clearInterval).toHaveBeenCalledWith(0);
     });
 });
+
+describe("settings → initial values", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test("has no pause between rounds by default", () => {
+        expect(settingsModule.settings.pauseBetweenRounds).toBe(false);
+    });
+});

@@ -80,18 +80,26 @@ with `audio.js` as a leaf module (imports nothing from the project).
 
 | duration | screen | audio (when enabled) |
 | --- | --- | --- |
-| 22 | "Ready" | **`lets-begin` on round 1 only** (warms up audio before the first beep); rounds 2+ are silent |
+| 22 | "Ready" | **`lets-begin` on round 1 only** (warms up audio before the first beep); rounds 2+ are silent and only reach this duration when the pause is on |
 | 21 | "Steady" | **silent** |
 | 20 | "Go" | **silent** |
 | 19–16 | Inhale, countdown 4→1 | spoken "inhale" once at 19 + **`inhale-beep` on every tick** |
 | 15–9 | Hold, countdown 7→1 | spoken "hold" once at 15 + **`hold-beep` on every tick** |
 | 8–1 | Exhale, countdown 8→1 | spoken "exhale" once at 8 + **`exhale-beep` on every tick** |
-| 0 | round ends: `currentRound++`, interval cleared, exercise reset | **`next-round`** if another round follows, else **`complete`** (played *after* `switchToExerciseCompleteMode()`, which stops lingering audio) |
+| 0 | round ends: `currentRound++`, interval cleared, exercise reset; if more rounds follow: **pause on** → round-complete screen, **pause off (default)** → the same tick runs `performExerciseStep(19)`, so the next round's inhale starts immediately | **pause on** → `next-round` when another round follows; **pause off (default)** → the next round's `inhale` cue + `inhale-beep` instead; last round → **`complete`** (played *after* `switchToExerciseCompleteMode()`, which stops lingering audio) |
 
 Gotchas:
 
 - `settings.inhale/hold/exhale` are **decremented** by the step functions; only
   `resetExercise()` restores them (4/7/8 and duration 22).
+- The "Add pause between rounds" checkbox (`#pauseBetweenRounds`, **unchecked by
+  default**) is read into `settings.pauseBetweenRounds` once, in
+  `switchToExerciseInProgressMode()`, and is intentionally *not* reset when going
+  home or completing. With it off, `performExerciseStep(0)` sets
+  `exerciseDuration = 19` and then recurses into `performExerciseStep(19)` in the
+  same tick: that step owns the "inhale" cue and the first count of 4, and its
+  trailing `--exerciseDuration` leaves the value at 18, so the next tick
+  continues the countdown at 3.
 - `performExerciseStep` ignores out-of-bounds durations (`<0` or `>22`) — tests pin this.
 - `actions.js` and `exercise.js` import each other (circular). It works because all
   references are function calls resolved at runtime; don't "fix" it casually.
@@ -115,7 +123,8 @@ code fails the suite.
 - Behavior when enabled (see the timing table above): `lets-begin` at duration 22 of
   round 1, spoken phase cue once at phase start, phase beep every tick of the phase,
   silence during Ready/Steady/Go (except the round-1 `lets-begin`),
-  `next-round`/`complete` at round end. Turning the toggle off, going back home, or
+  `next-round` (only when the pause checkbox is on) / `complete` at round end.
+  Turning the toggle off, going back home, or
   reaching the completion screen calls `stopAllAudio()` (pause + rewind).
 - Implementation notes: **all audio elements are created eagerly the moment the
   toggle turns on** (`preloadAudio()`; elements use `preload = "auto"`), so the first
@@ -132,7 +141,7 @@ code fails the suite.
 
 ## Testing conventions & gotchas
 
-5 suites / 96 tests, all green as of 2026-10-09 (`src/tests/*.test.js`).
+5 suites / 99 tests, all green as of 2026-10-09 (`src/tests/*.test.js`).
 
 - Jest runs in the **node** environment — there is no DOM. `ui.test.js` injects
   `src/tests/mocks/jqueryMock.js` through `uiModule.initializeJQuery()`.
@@ -193,10 +202,14 @@ leftGap:10, visibleDuringExercise:true`; log `created:` = all 9 elements at togg
 time (preload), `played:` = `lets-begin` ×1 (duration 22), `inhale.mp3` ×1,
 `inhale-beep` ×4, `hold.mp3` ×1, `hold-beep` ×3, no `clock-one-tick`; `errors: []`.
 
-Expected, full 2-round run (set `roundsSelection.value = "2"` before Start, probe at
-~49 s, budget 52 s): completion screen visible (`home:false, inProgress:false,
-complete:true`); log = `lets-begin` ×1 (round 1 only), each voice ×2, `inhale-beep` ×8,
-`hold-beep` ×14, `exhale-beep` ×16, `next-round` ×1, `complete` ×1; `errors: []`.
+Expected, full 2-round run with the pause checkbox **unchecked (default)** (set
+`roundsSelection.value = "2"` before Start, probe at ~45 s, budget 47 s): completion
+screen visible (`home:false, inProgress:false, complete:true`); log = `lets-begin` ×1
+(round 1 only), each voice ×2, `inhale-beep` ×8, `hold-beep` ×14, `exhale-beep` ×16,
+**`next-round` ×0**, `complete` ×1; `errors: []`; UI samples around t=24 s must go
+straight from `Exhale|1|Round 1 of 2` to `Inhale|4|Round 2 of 2` (no round-complete
+screen, no Ready/Steady/Go). Checking the box first restores the old numbers:
+probe ~49 s, budget 52 s, `next-round` ×1, with a `Round 2` pause screen between rounds.
 
 Critical details learned the hard way:
 

@@ -8,7 +8,8 @@ import {
     show,
     on,
     val,
-    toggleClass
+    toggleClass,
+    prop,
  } from "./mocks/jqueryMock";
 
 const switchToExerciseInProgressModeSpy = jest.spyOn(actionModule, "switchToExerciseInProgressMode")
@@ -138,6 +139,23 @@ describe("ui → getRoundDropdownValue()", () => {
         const value = uiModule.getRoundDropdownValue();
         expect(jQuery).toHaveBeenCalledWith("#roundsSelection");
         expect(value).toBe(3);
+    });
+});
+
+describe("ui → getPauseBetweenRoundsValue()", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        uiModule.initializeJQuery(jQuery);
+    });
+
+    test("reads the state of the checkbox element", () => {
+        prop.mockReturnValueOnce(true);
+
+        const value = uiModule.getPauseBetweenRoundsValue();
+
+        expect(jQuery).toHaveBeenCalledWith("#pauseBetweenRounds");
+        expect(prop).toHaveBeenCalledWith("checked");
+        expect(value).toBe(true);
     });
 });
 

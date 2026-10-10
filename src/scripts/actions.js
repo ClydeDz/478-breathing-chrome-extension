@@ -23,6 +23,7 @@ export function switchToExerciseCompleteMode() {
 
 export function switchToExerciseInProgressMode() {
     settingsModule.settings.rounds = uiModule.getRoundDropdownValue();
+    settingsModule.settings.pauseBetweenRounds = uiModule.getPauseBetweenRoundsValue();
     uiModule.toggleHomeVisibility(false);
     uiModule.toggleExerciseInProgressVisibility(true);
     uiModule.toggleExerciseCompleteVisibility(false);
