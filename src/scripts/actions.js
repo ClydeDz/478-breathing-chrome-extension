@@ -23,6 +23,7 @@ export function switchToExerciseCompleteMode() {
 
 export function switchToExerciseInProgressMode() {
     settingsModule.settings.rounds = uiModule.getRoundDropdownValue();
+    settingsModule.settings.pauseBetweenRounds = uiModule.getPauseBetweenRoundsValue();
     uiModule.toggleHomeVisibility(false);
     uiModule.toggleExerciseInProgressVisibility(true);
     uiModule.toggleExerciseCompleteVisibility(false);
@@ -30,7 +31,7 @@ export function switchToExerciseInProgressMode() {
 
 export function switchToHomeMode() {
     settingsModule.settings.currentRound = 1;
-    settingsModule.clearExerciseInterval();
+    settingsModule.clearExerciseInterval(settingsModule.intervalTimer);
     settingsModule.resetExercise();
     audioModule.stopAllAudio();
     

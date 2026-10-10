@@ -204,20 +204,50 @@ describe("exerciseSteps → performExerciseStep()", () => {
         expect(playAudioCueSpy).not.toHaveBeenCalledWith("next-round");
     });
 
-    test("triggers the required updates when times up but more rounds to go", () => {
-        settingsModule.settings.rounds = 5;    
-        const currentRound = settingsModule.settings.currentRound;    
-        exerciseModule.performExerciseStep(0);    
-        
+    test("flows straight into the next round when the pause between rounds is off", () => {
+        settingsModule.settings.rounds = 5;
+        settingsModule.settings.pauseBetweenRounds = false;
+        settingsModule.settings.inhale = 4;
+        const currentRound = settingsModule.settings.currentRound;
+        exerciseModule.performExerciseStep(0);
+
+        expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound + 1} of ${settingsModule.settings.rounds}`);
+        expect(resetExerciseSpy).toHaveBeenCalled();
+        expect(clearExerciseIntervalSpy).toHaveBeenCalled();
+        expect(settingsModule.settings.currentRound).toBe(currentRound + 1);
+
+        expect(startExerciseSpy).toHaveBeenCalled();
+        expect(switchToRoundCompleteModeSpy).not.toHaveBeenCalled();
+        expect(playAudioCueSpy).toHaveBeenCalledTimes(2);
+        expect(playAudioCueSpy).toHaveBeenCalledWith("inhale");
+        expect(playAudioCueSpy).toHaveBeenCalledWith("inhale-beep");
+        expect(playAudioCueSpy).not.toHaveBeenCalledWith("next-round");
+        expect(playAudioCueSpy).not.toHaveBeenCalledWith("complete");
+
+        expect(updateActionSpy).toHaveBeenCalledWith("Inhale");
+        expect(updateCountdownSpy).toHaveBeenCalledWith("4");
+        expect(settingsModule.settings.inhale).toBe(3);
+        expect(settingsModule.settings.exerciseDuration).toBe(18);
+
+        expect(switchToExerciseCompleteModeSpy).not.toHaveBeenCalled();
+    });
+
+    test("keeps the pause and its next-round cue when the pause between rounds is on", () => {
+        settingsModule.settings.rounds = 5;
+        settingsModule.settings.pauseBetweenRounds = true;
+        const currentRound = settingsModule.settings.currentRound;
+        exerciseModule.performExerciseStep(0);
+
         expect(updateTitleSpy).toHaveBeenCalledWith(`Round ${currentRound} of ${settingsModule.settings.rounds}`);
         expect(resetExerciseSpy).toHaveBeenCalled();
         expect(clearExerciseIntervalSpy).toHaveBeenCalled();
         expect(settingsModule.settings.currentRound).toBe(currentRound + 1);
 
         expect(startExerciseSpy).toHaveBeenCalled();
-        expect(switchToRoundCompleteModeSpy).toHaveBeenCalled();        
+        expect(switchToRoundCompleteModeSpy).toHaveBeenCalled();
         expect(playAudioCueSpy).toHaveBeenCalledWith("next-round");
         expect(playAudioCueSpy).not.toHaveBeenCalledWith("complete");
+        expect(updateActionSpy).not.toHaveBeenCalledWith("Inhale");
 
         expect(switchToExerciseCompleteModeSpy).not.toHaveBeenCalled();
     });
